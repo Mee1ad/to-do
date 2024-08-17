@@ -30,24 +30,24 @@ def task_item(task: TaskSchema):
     )
 
 
-def new_task_input_field():
+def new_task_input_field(tasklist_id: int):
     return (
         Input(
             type='text',
-            name='new_task',
+            name='task_text',
             id='new_task',
             placeholder='new task',
             hx_post='/add_task',
             hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
             hx_target='#new_task',
             hx_swap='outerHTML transition:true',
+            hx_vals=f'{{"tasklist_id": "{tasklist_id}"}}',
             hx_transition_in='fade-in-scale-up',
             cls='my-3'
         ),)
 
 
 def task_list_view(task_list: TaskListSchema):
-    tasks = task_list.tasks
     return (
         Div(
             Div(
@@ -57,8 +57,8 @@ def task_list_view(task_list: TaskListSchema):
             ),
             Br(),
             Ul(
-                *[task_item(task) for task in tasks],
-                new_task_input_field(),
+                *[task_item(task) for task in task_list.tasks],
+                new_task_input_field(task_list.id),
                 cls='text-2xl',
                 id='task_list'
             ),

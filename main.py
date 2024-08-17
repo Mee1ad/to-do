@@ -1,3 +1,5 @@
+from pydantic import ValidationError
+
 from components.task_components import *
 from schemas.task import *
 
@@ -14,11 +16,16 @@ def get():
 
 
 @rt('/add_task')
-def post(new_task: str):
-    task = Task.create(title=new_task)
+def post(task_text: str, tasklist_id: int):
+    try:
+        TaskCreateSchema(task_text=task_text, tasklist_id=tasklist_id)
+    except ValidationError as e:
+        return JSONResponse({"errors": e.errors()}, status_code=400)
+    task = Task.create(title=task_text)
+    tasklist_task = TaskListTask.create(tasklist_id=tasklist_id, task_id=task.id)
     return (
         task_item(task),
-        new_task_input_field()
+        new_task_input_field(tasklist_id)
     )
 
 
