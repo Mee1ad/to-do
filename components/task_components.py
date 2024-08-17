@@ -38,7 +38,7 @@ def new_task_input_field(tasklist_id: int):
             id=f'new_task_{tasklist_id}',
             placeholder='new task',
             autocomplete='off',
-            hx_post='/add_task',
+            hx_post='/task',
             hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
             hx_target=f'#new_task_{tasklist_id}',
             hx_swap='outerHTML transition:true',
@@ -63,7 +63,7 @@ def task_list_title_view(task_list: TaskListSchema):
         hx_swap='outerHTML transition:true',
         hx_vals=f'{{"task_list_id": "{task_list.id}"}}',
         hx_transition_in='fade-in-scale-up',
-        cls='text-gray-500 font-bold'
+        cls='text-gray-500 font-bold border-none'
     ),
 
 
@@ -81,10 +81,10 @@ def new_task_list_title_view(space_id: int):
             hx_swap='outerHTML transition:true',
             hx_vals=f'{{"space_id": "{space_id}"}}',
             hx_transition_in='fade-in-scale-up',
-            cls='text-gray-500 font-bold'
+            cls='text-gray-500 text-2xl font-bold border-none'
         ),
         id=item_id,
-        cls='w-1/5'
+        cls='w-1/5 min-w-48'
     ),
 
 
@@ -112,6 +112,45 @@ def space_view(space: SpaceSchema):
                 new_task_list_title_view(space.id),
                 cls='flex flex-wrap gap-8'
             ),
+            id="space_view",
             cls=''
         )
     )
+
+
+def spaces_list_view(spaces: list[SpaceSchema]):
+    return Aside(
+        Nav(
+            H3('Spaces', cls='font-bold text-lg'),
+            Br(),
+            Ul(
+                *[
+                    Li(
+                        P(space.title,
+                          hx_get=f'/space/{space.id}/{space.title}',
+                          hx_trigger=f'click',
+                          hx_target=f'#space_view',
+                          hx_swap='outerHTML transition:true',
+                          hx_transition_in='fade-in-scale-up',
+                          )) for space in spaces],
+                Input(
+                    type='text',
+                    name='space_title',
+                    id='new_space',
+                    placeholder='Add Space',
+                    autocomplete='off',
+                    hx_post='/space',
+                    hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
+                    hx_target=f'#new_space',
+                    hx_swap='outerHTML transition:true',
+                    hx_transition_in='fade-in-scale-up',
+                    cls='border-none focus:border-none !p-2'
+                ),
+                id='space_list',
+                cls='cursor-pointer'
+            ),
+
+        ),
+
+        cls='p-10 shadow-lg'
+    ),
