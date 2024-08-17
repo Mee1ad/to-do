@@ -35,11 +35,12 @@ def new_task_input_field(tasklist_id: int):
         Input(
             type='text',
             name='task_text',
-            id='new_task',
+            id=f'new_task_{tasklist_id}',
             placeholder='new task',
+            autocomplete='off',
             hx_post='/add_task',
             hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
-            hx_target='#new_task',
+            hx_target=f'#new_task_{tasklist_id}',
             hx_swap='outerHTML transition:true',
             hx_vals=f'{{"tasklist_id": "{tasklist_id}"}}',
             hx_transition_in='fade-in-scale-up',
@@ -47,14 +48,50 @@ def new_task_input_field(tasklist_id: int):
         ),)
 
 
+def task_list_title_view(task_list: TaskListSchema):
+    item_id = f'task_title_{task_list.id}'
+    return Input(
+        type='text',
+        id=item_id,
+        name='task_list_title',
+        value=task_list.title,
+        placeholder='Add New List',
+        autocomplete='off',
+        hx_put='/task_list',
+        hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
+        hx_target=f'#{item_id}',
+        hx_swap='outerHTML transition:true',
+        hx_vals=f'{{"task_list_id": "{task_list.id}"}}',
+        hx_transition_in='fade-in-scale-up',
+        cls='text-gray-500 font-bold'
+    ),
+
+
+def new_task_list_title_view(space_id: int):
+    item_id = f'new_task_title_{space_id}'
+    return Div(
+        Input(
+            type='text',
+            name='task_list_title',
+            placeholder='Add New List',
+            autocomplete='off',
+            hx_post='/task_list',
+            hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
+            hx_target=f'#{item_id}',
+            hx_swap='outerHTML transition:true',
+            hx_vals=f'{{"space_id": "{space_id}"}}',
+            hx_transition_in='fade-in-scale-up',
+            cls='text-gray-500 font-bold'
+        ),
+        id=item_id,
+        cls='w-1/5'
+    ),
+
+
 def task_list_view(task_list: TaskListSchema):
     return (
         Div(
-            Div(
-                P(task_list.title, cls='text-gray-500 font-bold'),
-                Div(cls='absolute top-10 left-0 right-0 h-[2px] bg-black bg-gray-500'),
-                cls='relative'
-            ),
+            task_list_title_view(task_list),
             Br(),
             Ul(
                 *[task_item(task) for task in task_list.tasks],
@@ -62,6 +99,19 @@ def task_list_view(task_list: TaskListSchema):
                 cls='text-2xl',
                 id='task_list'
             ),
-            cls='pt-10 pl-10 text-2xl w-1/6'
+            cls='text-2xl w-1/5'
+        )
+    )
+
+
+def space_view(space: SpaceSchema):
+    return (
+        Div(
+            Ul(
+                *[task_list_view(task_list) for task_list in space.task_lists],
+                new_task_list_title_view(space.id),
+                cls='flex flex-wrap gap-8'
+            ),
+            cls=''
         )
     )
