@@ -24,8 +24,13 @@ class TaskList(BaseModel):
 
     @property
     def tasks(self):
+        tasks = []
         if self.task_list_tasks:
-            return [task_list_tasks.task for task_list_tasks in self.task_list_tasks]
+            for task_list_tasks in self.task_list_tasks:
+                task = task_list_tasks.task
+                task.tasklist_id = task_list_tasks.tasklist_id
+                tasks.append(task_list_tasks.task)
+        return tasks
 
     class Meta:
         table_name = 'task_list'
