@@ -34,3 +34,7 @@ class SpaceSchema(BaseModel):
     id: int
     title: str
     task_lists: list[TaskListSchema]
+
+
+class SpaceCreateSchema(BaseModel):
+    title: constr(min_length=1)
