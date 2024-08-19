@@ -1,9 +1,9 @@
-from settings import db
+from settings import DB
 from db.models.task import *
 
 task_tables = [Task, TaskList, TaskListTask, Space, SpaceTaskList]
 
 
 def create_tables():
-    with db:
-        db.create_tables(task_tables)
+    with DB:
+        DB.create_tables(task_tables)
