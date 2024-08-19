@@ -8,7 +8,7 @@ class TaskListSchema(BaseModel):
 
 
 class TaskListCreateSchema(BaseModel):
-    task_list_title: constr(min_length=1)
+    tasklist_title: constr(min_length=1)
     space_id: int
 
 
@@ -21,7 +21,7 @@ class TaskSchema(BaseModel):
     id: int
     title: str
     checked: str
-    task_list_id: TaskListSchema
+    tasklist_id: TaskListSchema
 
 
 class TaskCreateSchema(BaseModel):

@@ -47,34 +47,34 @@ def new_task_input_field(tasklist_id: int):
         ),)
 
 
-def task_list_title_view(task_list: TaskListSchema):
-    item_id = f'task_title_{task_list.id}'
+def tasklist_title_view(tasklist: TaskListSchema):
+    item_id = f'task_title_{tasklist.id}'
     return Input(
         type='text',
         id=item_id,
-        name='task_list_title',
-        value=task_list.title,
+        name='tasklist_title',
+        value=tasklist.title,
         placeholder='Add New List',
         autocomplete='off',
-        hx_put='/task_list',
+        hx_put='/tasklist',
         hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
         hx_target=f'#{item_id}',
         hx_swap='outerHTML transition:true',
-        hx_vals=f'{{"task_list_id": "{task_list.id}"}}',
+        hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
         hx_transition_in='fade-in-scale-up',
         cls='text-gray-500 font-bold border-none'
     ),
 
 
-def new_task_list_title_view(space_id: int):
+def new_tasklist_title_view(space_id: int):
     item_id = f'new_task_title_{space_id}'
     return Div(
         Input(
             type='text',
-            name='task_list_title',
+            name='tasklist_title',
             placeholder='Add New List',
             autocomplete='off',
-            hx_post='/task_list',
+            hx_post='/tasklist',
             hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
             hx_target=f'#{item_id}',
             hx_swap='outerHTML transition:true',
@@ -87,16 +87,16 @@ def new_task_list_title_view(space_id: int):
     ),
 
 
-def task_list_view(task_list: TaskListSchema):
+def tasklist_view(tasklist: TaskListSchema):
     return (
         Div(
-            task_list_title_view(task_list),
+            tasklist_title_view(tasklist),
             Br(),
             Ul(
-                *[task_item(task) for task in task_list.tasks],
-                new_task_input_field(task_list.id),
+                *[task_item(task) for task in tasklist.tasks],
+                new_task_input_field(tasklist.id),
                 cls='text-2xl',
-                id='task_list'
+                id='tasklist'
             ),
             cls='text-2xl w-1/5'
         )
@@ -105,14 +105,14 @@ def task_list_view(task_list: TaskListSchema):
 
 def space_view(space: SpaceSchema):
     try:
-        tasklists_view = [task_list_view(task_list) for task_list in space.tasklists]
+        tasklists_view = [tasklist_view(tasklist) for tasklist in space.tasklists]
     except AttributeError as e:
         tasklists_view = []
     return (
         Div(
             Ul(
                 *tasklists_view,
-                new_task_list_title_view(space.id) if space else None,
+                new_tasklist_title_view(space.id) if space else None,
                 cls='flex flex-wrap gap-8'
             ),
             id="space_view",
