@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 
+from auth import *
 from components.task_components import *
-from schemas.task import *
 from db.helper import *
 
 tailwind = Script(src="https://cdn.tailwindcss.com")
@@ -13,6 +13,11 @@ def get():
     spaces = Space.select()
     space = get_space_by_id(1)
     return Div(
+        A(
+            'Login with google',
+            href=get_login_url(),
+            id='login_with_google'
+        ),
         spaces_list_view(spaces),
         space_view(space),
         cls='flex gap-8 pt-10 pl-10',
@@ -103,6 +108,15 @@ def post(space_title: str):
         )
 
     )
+
+
+@rt('/auth/callback')
+def callback(request):
+    code = request.GET["code"]
+    profile_and_token = workos_client.sso.get_profile_and_token(code)
+    profile = profile_and_token.profile
+    print(profile)
+    return RedirectResponse("/")
 
 
 serve()
