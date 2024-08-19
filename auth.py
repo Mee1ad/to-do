@@ -2,6 +2,7 @@ from workos import WorkOSClient
 
 from db.models.auth import User
 from settings import env
+from schemas.auth import UserSchema
 
 workos_client = WorkOSClient(api_key=env.workos_api_key, client_id=env.workos_client_id)
 
@@ -16,7 +17,7 @@ def get_login_url() -> str:
     return authorization_url
 
 
-def get_user_from_session(session) -> User:
+def get_user_from_session(session) -> UserSchema | None:
     if session.get("user_id", None):
         return User.get(id=session["user_id"])
     return None

@@ -1,8 +1,7 @@
 from peewee import SqliteDatabase
+from pydantic_settings import BaseSettings
 
 DB = SqliteDatabase('./db/to-do.sqlite3')
-
-from pydantic_settings import BaseSettings
 
 
 class Env(BaseSettings):
@@ -15,5 +14,3 @@ class Env(BaseSettings):
 
 
 env = Env()
-
-print(env.model_dump())

@@ -22,10 +22,25 @@ def task_checkbox(task: TaskSchema):
 
 def task_item(task: TaskSchema):
     return (
-        Div(Li(task.title, cls='list-none'),
+        Div(
+            Li(
+                Span(
+                    "x",
+                    hx_delete=f'/task/{task.id}',
+                    hx_trigger=f'click',
+                    hx_target=f'#task_{task.id}',
+                    hx_swap='delete transition:true',
+                    # hx_vals=f'{{"tasklist_id": "{tasklist_id}"}}',
+                    hx_transition_in='fade-in-scale-up',
+                    cls='text-red-300 cursor-pointer'
+                ),
+                task.title,
+                cls='list-none'
+            ),
             task_checkbox(task),
+            id=f'task_{task.id}',
             cls='flex text-2xl justify-between',
-            )
+        )
     )
 
 
@@ -49,21 +64,33 @@ def new_task_input_field(tasklist_id: int):
 
 def tasklist_title_view(tasklist: TaskListSchema):
     item_id = f'task_title_{tasklist.id}'
-    return Input(
-        type='text',
-        id=item_id,
-        name='tasklist_title',
-        value=tasklist.title,
-        placeholder='Add New List',
-        autocomplete='off',
-        hx_put='/tasklist',
-        hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
-        hx_target=f'#{item_id}',
-        hx_swap='outerHTML transition:true',
-        hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
-        hx_transition_in='fade-in-scale-up',
-        cls='text-gray-500 font-bold border-none'
-    ),
+    return Div(
+        Span(
+            "x",
+            hx_delete=f'/tasklist/{tasklist.id}',
+            hx_trigger=f'click',
+            hx_target=f'#tasklist_{tasklist.id}',
+            hx_swap='delete transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='flex items-center text-red-300 cursor-pointer '
+        ),
+        Input(
+            type='text',
+            id=item_id,
+            name='tasklist_title',
+            value=tasklist.title,
+            placeholder='Add New List',
+            autocomplete='off',
+            hx_put='/tasklist',
+            hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
+            hx_target=f'#{item_id}',
+            hx_swap='outerHTML transition:true',
+            hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
+            hx_transition_in='fade-in-scale-up',
+            cls='text-gray-500 font-bold border-none !m-0 !pl-1.5'
+        ),
+        cls='flex !m-0'
+    )
 
 
 def new_tasklist_title_view(space_id: int):
@@ -98,6 +125,7 @@ def tasklist_view(tasklist: TaskListSchema):
                 cls='text-2xl',
                 id='tasklist'
             ),
+            id=f'tasklist_{tasklist.id}',
             cls='text-2xl w-1/5'
         )
     )
@@ -124,18 +152,37 @@ def space_view(space: SpaceSchema):
 def spaces_list_view(spaces: list[SpaceSchema]):
     return Aside(
         Nav(
-            H3('Spaces', cls='font-bold text-lg'),
+            H3(
+                'Spaces',
+                hx_get='/',
+                hx_replace_url='/',
+                hx_trigger='click',
+                hx_target='#main',
+                hx_swap='outerHTML transition:true',
+                cls='font-bold text-lg cursor-pointer'),
             Br(),
             Ul(
                 *[
                     Li(
-                        P(space.title,
-                          hx_get=f'/space/{space.id}/{space.title}',
-                          hx_trigger=f'click',
-                          hx_target=f'#space_view',
-                          hx_swap='outerHTML transition:true',
-                          hx_transition_in='fade-in-scale-up',
-                          )) for space in spaces],
+                        Span(
+                            "x",
+                            hx_delete=f'/space/{space.id}',
+                            hx_trigger=f'click',
+                            hx_target=f'#space_{space.id}',
+                            hx_swap='delete transition:true',
+                            hx_transition_in='fade-in-scale-up',
+                            cls='text-red-300 cursor-pointer'
+                        ),
+                        P(space.title, ),
+                        id=f'space_{space.id}',
+                        hx_get=f'/space/{space.id}',
+                        hx_replace_url=f'/space/{space.id}/{space.title}',
+                        hx_trigger=f'click',
+                        hx_target=f'#space_view',
+                        hx_swap='outerHTML transition:true',
+                        hx_transition_in='fade-in-scale-up',
+                        cls='flex justify-start px-0 gap-4'
+                    ) for space in spaces],
                 Input(
                     type='text',
                     name='space_title',
