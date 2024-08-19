@@ -1,17 +1,29 @@
+import uuid
+
 from pydantic import ValidationError
 
 from auth import *
 from components.task_components import *
 from db.helper import *
+from db.models.auth import User, Login
+from helper import clear_session
+from schemas.auth import UserSchema
 
 tailwind = Script(src="https://cdn.tailwindcss.com")
 app, rt = fast_app(hdrs=(tailwind,), debug=True, live=True, reload_interval=1)
 
 
 @rt('/')
-def get():
-    spaces = Space.select()
-    space = get_space_by_id(1)
+def get(session):
+    user: UserSchema = get_user_from_session(session)
+    if not user:
+        user: UserSchema = User.create(name='Guest')
+        Login.create(user_id=user.id, provider='session', connection_id=uuid.uuid4().hex)
+        session['user_id'] = user.id
+    spaces = Space.select().where(Space.user_id == user.id).execute()
+    first_space = Space.select().where(Space.user_id == user.id).first()
+    first_space_id = first_space.id if first_space else None
+    space = get_space_by_id(first_space_id)
     return Div(
         A(
             'Login with google',
@@ -52,38 +64,40 @@ def put(task_id: int):
     return task_checkbox(task)
 
 
-@rt('/task_list')
-def post(task_list_title: str, space_id: int):
+@rt('/tasklist')
+def post(tasklist_title: str, space_id: int, session):
+    user: UserSchema = get_user_from_session(session)
     try:
-        TaskListCreateSchema(task_list_title=task_list_title, space_id=space_id)
+        TaskListCreateSchema(tasklist_title=tasklist_title, space_id=space_id)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    task_list = TaskList.create(title=task_list_title.capitalize())
-    space_task_list = SpaceTaskList.create(space_id=space_id, task_list_id=task_list.id)
+    tasklist = TaskList.create(title=tasklist_title.capitalize(), user_id=user.id)
+    space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
-        task_list_view(task_list),
-        new_task_list_title_view(task_list.id),
+        tasklist_view(tasklist),
+        new_tasklist_title_view(tasklist.id),
     )
 
 
-@rt('/task_list')
-def put(task_list_id: int, task_list_title: str):
+@rt('/tasklist')
+def put(tasklist_id: int, tasklist_title: str):
     try:
-        TaskListUpdateSchema(id=task_list_id, title=task_list_title)
+        TaskListUpdateSchema(id=tasklist_id, title=tasklist_title)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    TaskList.update(title=task_list_title.capitalize()).where(TaskList.id == task_list_id).execute()
-    task_list = TaskList.get(TaskList.id == task_list_id)
-    return task_list_title_view(task_list)
+    TaskList.update(title=tasklist_title.capitalize()).where(TaskList.id == tasklist_id).execute()
+    tasklist = TaskList.get(TaskList.id == tasklist_id)
+    return tasklist_title_view(tasklist)
 
 
 @rt('/space')
-def post(space_title: str):
+def post(space_title: str, session):
+    user: UserSchema = get_user_from_session(session)
     try:
         SpaceCreateSchema(title=space_title)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    space = Space.create(title=space_title.capitalize())
+    space = Space.create(title=space_title.capitalize(), user_id=user.id)
     return (
         P(space.title,
           hx_get=f'/space/{space.id}/{space.title}',
@@ -95,7 +109,7 @@ def post(space_title: str):
           ),
         Input(
             type='text',
-            name='task_space',
+            name='space_title',
             id='new_space',
             placeholder='Add Space',
             autocomplete='off',
@@ -111,11 +125,16 @@ def post(space_title: str):
 
 
 @rt('/auth/callback')
-def callback(request):
-    code = request.GET["code"]
+def get(code: str, session):
     profile_and_token = workos_client.sso.get_profile_and_token(code)
     profile = profile_and_token.profile
-    print(profile)
+    user, created = User.get_or_create(name=profile.first_name, email=profile.email)
+    Login.get_or_create(user=user.id, provider=profile.connection_type,
+                        connection_id=profile.connection_id, idp_id=profile.idp_id,
+                        defaults={'user': user.id, 'provider': profile.connection_type,
+                                  'connection_id': profile.connection_id, 'idp_id': profile.idp_id})
+    clear_session(session)
+    session['user_id'] = user.id
     return RedirectResponse("/")
 
 
