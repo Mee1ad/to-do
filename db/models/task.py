@@ -49,23 +49,23 @@ class Space(BaseModel):
     title = CharField()
 
     @property
-    def space_task_lists(self):
+    def space_tasklists(self):
         return []
 
     @property
-    def task_lists(self):
-        task_lists = []
-        if self.space_task_lists:
-            for space_task_list in self.space_task_lists:
+    def tasklists(self):
+        tasklists = []
+        if self.space_tasklists:
+            for space_task_list in self.space_tasklists:
                 task_list = space_task_list.task_list
                 task_list.space_id = space_task_list.task_list_id
-                task_lists.append(task_list)
-        return task_lists
+                tasklists.append(task_list)
+        return tasklists
 
 
 class SpaceTaskList(BaseModel):
-    space = ForeignKeyField(Space, backref='space_task_lists')
-    task_list = ForeignKeyField(TaskList, backref='space_task_lists')
+    space = ForeignKeyField(Space, backref='space_tasklists')
+    task_list = ForeignKeyField(TaskList, backref='space_tasklists')
 
     class Meta:
         table_name = 'space_task_list'

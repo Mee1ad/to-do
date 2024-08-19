@@ -2,7 +2,6 @@ from fasthtml.common import *
 
 from constants import ENTER_KEY_CODE
 from schemas.task import *
-from db.models.task import *
 
 
 def task_checkbox(task: TaskSchema):
@@ -105,11 +104,15 @@ def task_list_view(task_list: TaskListSchema):
 
 
 def space_view(space: SpaceSchema):
+    try:
+        tasklists_view = [task_list_view(task_list) for task_list in space.tasklists]
+    except AttributeError as e:
+        tasklists_view = []
     return (
         Div(
             Ul(
-                *[task_list_view(task_list) for task_list in space.task_lists],
-                new_task_list_title_view(space.id),
+                *tasklists_view,
+                new_task_list_title_view(space.id) if space else None,
                 cls='flex flex-wrap gap-8'
             ),
             id="space_view",

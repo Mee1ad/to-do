@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from pydantic import BaseModel, StrictStr, StrictInt, constr
+from pydantic import BaseModel, constr
 
 
 class TaskListSchema(BaseModel):
@@ -33,7 +32,7 @@ class TaskCreateSchema(BaseModel):
 class SpaceSchema(BaseModel):
     id: int
     title: str
-    task_lists: list[TaskListSchema]
+    tasklists: list[TaskListSchema]
 
 
 class SpaceCreateSchema(BaseModel):
