@@ -1,13 +1,8 @@
 from datetime import datetime
 
-from peewee import Model, CharField, ForeignKeyField, DateTimeField
+from peewee import CharField, ForeignKeyField, DateTimeField
 
-from settings import DB
-
-
-class BaseModel(Model):
-    class Meta:
-        database = DB
+from settings import BaseModel
 
 
 class User(BaseModel):

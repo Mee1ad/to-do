@@ -1,5 +1,8 @@
-from db.models.auth import *
-from db.models.task import *
+from auth.models import User, Login
+from settings import DB
+from space.models import Space, SpaceTaskList
+from task.models import Task
+from tasklist.models import TaskList, TaskListTask
 
 task_tables = [Task, TaskList, TaskListTask, Space, SpaceTaskList]
 auth_tables = [User, Login]

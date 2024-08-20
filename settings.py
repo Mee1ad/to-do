@@ -1,7 +1,12 @@
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, Model
 from pydantic_settings import BaseSettings
 
-DB = SqliteDatabase('./db/to-do.sqlite3')
+DB = SqliteDatabase('./db/to-do.sqlite3', pragmas={'foreign_keys': 1})
+
+
+class BaseModel(Model):
+    class Meta:
+        database = DB
 
 
 class Env(BaseSettings):

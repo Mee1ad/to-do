@@ -1,8 +1,14 @@
+from peewee import JOIN, Model
 from playhouse.migrate import SqliteMigrator, migrate
 
-from db.models.task import *
-from schemas.task import *
 from settings import DB
+from space.models import Space, SpaceTaskList
+from space.schemas import SpaceSchema
+from task.models import Task
+from tasklist.models import TaskList, TaskListTask
+
+
+
 
 
 def get_tasklist_by_id(tasklist_id: int):
