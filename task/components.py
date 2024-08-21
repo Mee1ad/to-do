@@ -62,9 +62,4 @@ def new_task_input_component(tasklist_id: int):
         ),)
 
 
-def add_task_button_component():
-    return (
-        Button(
-            '+ Add Task',
-            cls='outline outline-1 outline-gray-300 rounded py-2 px-14 text-md'
-        ))
+

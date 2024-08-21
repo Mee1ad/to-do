@@ -2,7 +2,7 @@ from fasthtml.common import JSONResponse
 from pydantic import ValidationError
 
 from app_init import app
-from task.components import task_component, new_task_input_component, task_checkbox_component, add_task_button_component
+from task.components import task_component, new_task_input_component, task_checkbox_component
 from task.models import Task
 from task.schemas import TaskCreateSchema
 from tasklist.models import TaskListTask
@@ -36,6 +36,9 @@ def delete_task(task_id: int):
     Task.delete().where(Task.id == task_id).execute()
 
 
+from common.components import *
+
+
 @app.get('/test')
 def test():
-    return add_task_button_component()
+    return add_form_component()
