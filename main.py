@@ -24,14 +24,17 @@ def home_page(session):
     first_space_id = first_space.id if first_space else None
     space = get_space_by_id(first_space_id)
     return Div(
-        A(
-            'Login with google',
-            href=get_login_url(),
-            id='login_with_google'
-        ),
-        spaces_list_component(spaces),
-        space_component(space),
-        cls='flex gap-8 pt-10 pl-10',
+        # A(
+        #     'Login with google',
+        #     href=get_login_url(),
+        #     id='login_with_google'
+        # ),
+        Div(
+            spaces_list_component(spaces),
+            space_component(space),
+            cls='flex',
+        )
+
     )
 
 

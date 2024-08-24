@@ -6,8 +6,9 @@ tailwind.config = {
     theme: {
         extend: {
             // fontFamily: {
-            //     heading: ['var(--font-heading)', ...fontFamily.sans],
-            //     body: ['var(--font-body)', ...fontFamily.sans]
+                // sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+                // heading: ['var(--font-heading)', ...fontFamily.sans],
+                // body: ['var(--font-body)', ...fontFamily.sans]
             // },
             colors: {
                 border: 'hsl(var(--border))',
@@ -63,5 +64,5 @@ tailwind.config = {
             },
         },
     },
-    // plugins: [require("tailwindcss-animate")],
+    // plugins: [require('@tailwindcss/forms'),],
 };

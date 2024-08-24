@@ -1,4 +1,4 @@
-from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br
+from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, Form, Label, Button, I
 
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
@@ -14,16 +14,21 @@ def space_component(space: SpaceSchema):
         Div(
             Ul(
                 *tasklists_view,
-                new_tasklist_title_component(space.id) if space else None,
-                cls='flex flex-wrap gap-8'
+                Div(
+                    new_tasklist_title_component(space.id) if space else None,
+                    cls='items-baseline'
+                ),
+
+                id=f'space_{space.id}',
+                cls='flex flex-wrap gap-16'
             ),
             id="space_component",
-            cls=''
+            cls='py-10 pl-16'
         )
     )
 
 
-def spaces_list_component(spaces: list[SpaceSchema]):
+def spaces_list_component_old(spaces: list[SpaceSchema]):
     return Aside(
         Nav(
             H3(
@@ -78,3 +83,55 @@ def spaces_list_component(spaces: list[SpaceSchema]):
 
         cls='p-10 shadow-lg'
     ),
+
+
+def new_space_input_component():
+    return (
+        Form(
+            Label('Title', fr='name',
+                  cls='absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900'),
+            Input(type='text', name='space_title', id='space_title', placeholder='New Space', autocomplete='off',
+                  cls='block w-full rounded-md border-0 p-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset'
+                      ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
+                      ' sm:text-sm sm:leading-6'),
+            Button(
+                I(cls='fa-plus fa-regular text-secondary'),
+                cls='bg-primary px-3.5 rounded-md',
+            ),
+            hx_post='/space',
+            hx_trigger='click',
+            hx_target=f'#space_list',
+            hx_swap='beforeend transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='relative flex gap-2',
+            **{'hx-on:htmx:after-request': "this.reset()"}
+        )
+    )
+
+
+def space_title_component(space: SpaceSchema):
+    return A(
+        Span(space.title, cls='mx-2 text-sm font-medium'),
+        href='#',
+        cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
+            ' rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+            ' dark:hover:text-gray-200 hover:text-gray-700'
+    )
+
+
+def spaces_list_component(spaces: list[SpaceSchema]):
+    return (
+        Aside(
+            Div(
+                Nav(
+                    *[space_title_component(space) for space in spaces],
+                    id='space_list',
+                    cls='space-y-3'
+                ),
+                cls='flex flex-col justify-between flex-1 mt-6'
+            ),
+            new_space_input_component(),
+            cls='flex flex-col w-1/4 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
+                ' dark:bg-gray-900 dark:border-gray-700 pb-6',
+        )
+    )

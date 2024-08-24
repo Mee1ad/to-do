@@ -21,7 +21,6 @@ def create_tasklist(tasklist_title: str, space_id: int, session):
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
         tasklist_component(tasklist),
-        new_tasklist_title_component(tasklist.id),
     )
 
 

@@ -1,26 +1,17 @@
-from fasthtml.common import Input, Div, Li, Span, Button, Svg, Path
+from fasthtml.common import Input, Div, Li, Span, Button, Svg, Path, Label, P, I, Form
 
 from constants import ENTER_KEY_CODE
 from task.schemas import TaskSchema
 
 
 def task_checkbox_component(task: TaskSchema):
-    return Input(
-        id=f'task-{task.id}',
-        type='checkbox',
-        name='task-check',
-        label='Done',
-        checked=task.checked,
-        hx_put='/task_checkbox',
-        hx_trigger='change',
-        hx_target=f'#task-{task.id}',
-        hx_vals=f'{{"task_id": "{task}"}}',
-        hx_swap='outerHTML',
-        cls='mr-0'
+    return (
+
+
     )
 
 
-def task_component(task: TaskSchema):
+def task_delete_component(task: TaskSchema):
     return (
         Div(
             Li(
@@ -39,27 +30,57 @@ def task_component(task: TaskSchema):
             ),
             task_checkbox_component(task),
             id=f'task_{task.id}',
-            cls='flex text-2xl justify-between',
+            cls='flex text-lg justify-between bg-secondary px-2 rounded-md',
         )
+    )
+
+
+def task_component(task: TaskSchema):
+    return Div(
+        Input(
+            id=f'task-{task.id}',
+            type='checkbox',
+            name='task-check',
+            label='Done',
+            checked=task.checked,
+            hx_put='/task_checkbox',
+            hx_trigger='change',
+            hx_target=f'#task-{task.id}',
+            hx_vals=f'{{"task_id": "{task}"}}',
+            cls='checkbox w-4 h-4'
+        ),
+        Label(
+            task.title,
+            id=f'task_{task.id}',
+            cls='flex text-lg justify-between px-2',
+        ),
+        cls='flex items-center bg-secondary px-2 py-1 rounded-md'
     )
 
 
 def new_task_input_component(tasklist_id: int):
     return (
-        Input(
-            type='text',
-            name='task_text',
-            id=f'new_task_{tasklist_id}',
-            placeholder='new task',
-            autocomplete='off',
+        Form(
+            Input(type='text',
+                  name='task_text',
+                  id='task_text',
+                  placeholder='New Task',
+                  autocomplete='off',
+                  cls='block w-full rounded-md border-0 p-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset'
+                      ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
+                      ' sm:text-sm sm:leading-6'),
+            Button(
+                I(cls='fa-plus fa-regular text-secondary'),
+                type='submit',
+                cls='bg-primary px-3.5 rounded-md',
+            ),
             hx_post='/task',
-            hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
-            hx_target=f'#new_task_{tasklist_id}',
-            hx_swap='outerHTML transition:true',
+            hx_trigger='submit',
+            hx_target=f'#tasklist_{tasklist_id}',
+            hx_swap='beforeend transition:true',
             hx_vals=f'{{"tasklist_id": "{tasklist_id}"}}',
             hx_transition_in='fade-in-scale-up',
-            cls='my-3'
-        ),)
-
-
-
+            cls='relative flex gap-2',
+            **{'hx-on:htmx:after-request': "this.reset()"}
+        )
+    )

@@ -1,4 +1,4 @@
-from fasthtml.common import JSONResponse
+from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
@@ -14,11 +14,10 @@ def create_task(task_text: str, tasklist_id: int):
         TaskCreateSchema(task_text=task_text, tasklist_id=tasklist_id)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    task = Task.create(title=task_text)
+    task = Task.create(title=task_text.capitalize())
     tasklist_task = TaskListTask.create(tasklist_id=tasklist_id, task_id=task.id)
     return (
         task_component(task),
-        new_task_input_component(tasklist_id)
     )
 
 
@@ -27,7 +26,6 @@ def update_task(task_id: int):
     query = Task.update(checked=(Task.checked == 0)).where(Task.id == task_id)
     query.execute()
     task = Task.get(id=task_id)
-    return task_checkbox_component(task)
 
 
 @app.delete('/task/{task_id}')
@@ -36,9 +34,16 @@ def delete_task(task_id: int):
     Task.delete().where(Task.id == task_id).execute()
 
 
-from common.components import *
-
-
 @app.get('/test')
 def test():
-    return add_form_component()
+    return (
+        Div(
+            Div('Content 1', cls='bg-blue-500 h-40 p-4'),
+            Div('Content 2', cls='bg-green-500 h-60 p-4'),
+            Div('Content 3', cls='bg-red-500 h-32 p-4'),
+            Div('Content 4', cls='bg-yellow-500 h-48 p-4'),
+            Div('Content 5', cls='bg-purple-500 h-52 p-4'),
+            Div('Content 6', cls='bg-pink-500 h-72 p-4'),
+            cls='grid grid-cols-3 gap-4 grid-auto-rows-auto'
+        )
+    )
