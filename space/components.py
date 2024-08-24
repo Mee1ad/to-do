@@ -131,7 +131,7 @@ def spaces_list_component(spaces: list[SpaceSchema]):
                 cls='flex flex-col justify-between flex-1 mt-6'
             ),
             new_space_input_component(),
-            cls='flex flex-col w-1/4 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
+            cls='flex flex-col w-1/6 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
                 ' dark:bg-gray-900 dark:border-gray-700 pb-6',
         )
     )

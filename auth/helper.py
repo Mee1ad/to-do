@@ -22,7 +22,6 @@ def get_login_url() -> str:
 
 def get_user_from_session(session) -> UserSchema | None:
     if session.get("user_id", None):
-        print('dddddddddddddddddddddddd', session.get("user_id", None))
         return User.get(id=session["user_id"])
     return None
 
