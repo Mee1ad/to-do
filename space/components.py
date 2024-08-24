@@ -19,7 +19,7 @@ def space_component(space: SpaceSchema):
                     cls='items-baseline'
                 ),
 
-                id=f'space_{space.id}',
+                id=f'space_{getattr(space, 'id', None)}',
                 cls='flex flex-wrap gap-16'
             ),
             id="space_component",

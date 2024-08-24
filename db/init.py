@@ -10,5 +10,5 @@ auth_tables = [User, Login]
 
 def create_tables():
     with DB:
-        DB.create_tables(task_tables)
         DB.create_tables(auth_tables)
+        DB.create_tables(task_tables)
