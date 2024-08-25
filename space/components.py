@@ -3,6 +3,8 @@ from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, 
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
 from tasklist.components import tasklist_component, new_tasklist_title_component
+from auth.helper import get_login_url
+from auth.schemas import UserSchema
 
 
 def space_component(space: SpaceSchema):
@@ -16,14 +18,15 @@ def space_component(space: SpaceSchema):
                 *tasklists_view,
                 Div(
                     new_tasklist_title_component(space.id) if space else None,
-                    cls='items-baseline'
+                    id='new_tasklist_title_component',
+                    cls='w-1/5'
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
                 cls='flex flex-wrap gap-16'
             ),
             id="space_component",
-            cls='py-10 pl-16'
+            cls='ml-64 py-10 pl-16'
         )
     )
 
@@ -110,20 +113,41 @@ def new_space_input_component():
 
 
 def space_title_component(space: SpaceSchema):
-    return A(
+    return P(
         Span(space.title, cls='mx-2 text-sm font-medium'),
-        href='#',
+        hx_get=f'/space/{space.id}',
+        # hx_replace_url=f'/space/{space.id}/{space.title}',
+        hx_trigger=f'click',
+        hx_target=f'#space_component',
+        hx_swap='outerHTML transition:true',
+        hx_transition_in='fade-in-scale-up',
         cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
             ' rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-            ' dark:hover:text-gray-200 hover:text-gray-700'
+            ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
     )
 
 
-def spaces_list_component(spaces: list[SpaceSchema]):
+def spaces_list_component(spaces: list[SpaceSchema], user: UserSchema):
+    login_button_component = A(
+        'Login',
+        href=get_login_url(),
+        cls='relative flex gap-2 hover:bg-secondary py-1 px-2 rounded-md cursor-pointer',
+    ),
+    if user.name.lower() != 'guest':
+        login_button_component = P(
+            'Hi ' + user.name.capitalize()
+        )
+
     return (
         Aside(
             Div(
                 Nav(
+                    Div(
+                        P('Spaces', cls='font-bold'),
+                        login_button_component,
+                        cls='flex justify-between items-center'
+                    ),
+
                     *[space_title_component(space) for space in spaces],
                     id='space_list',
                     cls='space-y-3'
@@ -131,7 +155,7 @@ def spaces_list_component(spaces: list[SpaceSchema]):
                 cls='flex flex-col justify-between flex-1 mt-6'
             ),
             new_space_input_component(),
-            cls='flex flex-col w-1/6 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
-                ' dark:bg-gray-900 dark:border-gray-700 pb-6',
+            cls='flex flex-col w-64 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
+                ' dark:bg-gray-900 dark:border-gray-700 py-2 fixed',
         )
     )
