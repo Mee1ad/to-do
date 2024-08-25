@@ -55,12 +55,12 @@ def tasklist_title_component(tasklist: TaskListSchema, **kwargs):
             hx_transition_in='fade-in-scale-up',
             cls='inline text-primary font-bold'
         ),
-        cls='pb-8'
+        cls=''
     )
 
 
 def new_tasklist_title_component(space_id: int):
-    item_id = f'new_task_title_{space_id}'
+    new_tasklist_title_id = f'new_task_title_{space_id}'
     return (
         Form(
             Input(
@@ -72,20 +72,22 @@ def new_tasklist_title_component(space_id: int):
                     ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
                     ' sm:text-sm sm:leading-6'
             ),
-            Button(
-                I(cls='fa-plus fa-regular text-secondary'),
-                type='submit',
-                cls='bg-primary px-3.5 rounded-md',
-            ),
+            # Button(
+            #     I(cls='fa-plus fa-regular text-secondary'),
+            #     type='submit',
+            #     cls='bg-primary px-3.5 rounded-md',
+            # ),
             hx_post='/tasklist',
-            hx_trigger='click',
+            hx_trigger='submit',
             hx_target=f'#space_{space_id}',
             hx_swap='beforeend transition:true',
             hx_vals=f'{{"space_id": "{space_id}"}}',
             hx_transition_in='fade-in-scale-up',
-            id=item_id,
+            id=new_tasklist_title_id,
             cls='relative flex gap-2',
-            **{'hx-on:htmx:after-request': "this.reset()"}
+            # **{'hx-on:htmx:after-request': "javascript:void(0);"}
+            **{
+                'hx-on:htmx:before-request': "this.parentElement.classList.add('opacity-0'); setTimeout(() => this.parentElement.remove(), 10)"}
         ),)
 
 
@@ -110,13 +112,26 @@ def tasklist_component(tasklist: TaskListSchema):
     return (
         Fieldset(
             Legend('tasklist', cls='sr-only'),
-            tasklist_title_component(tasklist),
+            Div(
+                tasklist_title_component(tasklist),
+                I(
+                    hx_delete=f'/tasklist/{tasklist.id}',
+                    hx_trigger=f'click',
+                    hx_target=f'#tasklist_card_{tasklist.id}',
+                    hx_swap='delete transition:true',
+                    hx_transition_in='fade-in-scale-up',
+                    cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md'
+                ),
+                cls='flex items-center justify-between mb-8'
+            ),
+
             Div(
                 *[task_component(task) for task in tasklist.tasks],
                 id=f'tasklist_{tasklist.id}',
                 cls='flex flex-col gap-2'
             ),
             new_task_input_component(tasklist.id),
+            id=f'tasklist_card_{tasklist.id}',
             cls='flex flex-col w-1/5 gap-2 shadow-md p-4 rounded-lg'
         )
     )
