@@ -10,5 +10,5 @@ global_css = Link(rel="stylesheet", href="global.css", type="text/css")
 font_inter = Link(rel="stylesheet", href="https://rsms.me/inter/inter.css")
 css = Style('body { font-family: Inter var, sans;}')
 
-app, rt = fast_app(hdrs=(tailwind, tailwind_settings, tailwind_forms, global_css, font_inter, css, font_awesome),
+app, rt = fast_app(hdrs=(tailwind, tailwind_settings, tailwind_forms, global_css, font_inter, css, font_awesome ),
                    debug=True, live=True, reload_interval=1, pico=False)
