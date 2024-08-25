@@ -132,6 +132,6 @@ def tasklist_component(tasklist: TaskListSchema):
             ),
             new_task_input_component(tasklist.id),
             id=f'tasklist_card_{tasklist.id}',
-            cls='flex flex-col w-1/5 gap-2 shadow-md p-4 rounded-lg'
+            cls='flex flex-col w-56 gap-2 shadow-md p-4 rounded-lg'
         )
     )
