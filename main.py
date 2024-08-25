@@ -30,7 +30,7 @@ def home_page(session):
         #     id='login_with_google'
         # ),
         Div(
-            spaces_list_component(spaces),
+            spaces_list_component(spaces, user),
             space_component(space),
             cls='flex',
         )
