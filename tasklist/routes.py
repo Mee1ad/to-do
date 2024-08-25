@@ -1,4 +1,4 @@
-from fasthtml.common import JSONResponse
+from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
@@ -21,7 +21,11 @@ def create_tasklist(tasklist_title: str, space_id: int, session):
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
         tasklist_component(tasklist),
-    )
+        Div(
+            new_tasklist_title_component(space_id),
+            id='new_tasklist_title_component',
+            cls='w-1/5'
+        ),)
 
 
 @app.put('/tasklist')
