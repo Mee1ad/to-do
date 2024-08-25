@@ -6,7 +6,9 @@ from auth.helper import get_user_from_session
 from auth.schemas import UserSchema
 from constants import ENTER_KEY_CODE
 from db.helper import get_space_by_id
-from space.components import space_component, space_title_component
+from auth.models import User, Login
+import uuid
+from space.components import space_component, spaces_list_component, space_title_component
 from space.models import Space, SpaceTaskList
 from space.schemas import SpaceCreateSchema
 
@@ -18,9 +20,15 @@ def get_space(space_id: int):
 
 
 @app.get('/space/{space_id}/{space_title}')
-def get_public_space(space_id: int, space_title: str):
+def get_public_space(space_id: int, space_title: str, session):
+    user: UserSchema = get_user_from_session(session)
+    if not user:
+        user: UserSchema = User.create(name='Guest')
+        Login.create(user_id=user.id, provider='session', connection_id=uuid.uuid4().hex)
+        session['user_id'] = user.id
+    spaces = Space.select().where(Space.user_id == user.id).execute()
     space = get_space_by_id(space_id)
-    return space_component(space)
+    return spaces_list_component(spaces), space_component(space)
 
 
 @app.post('/space')
