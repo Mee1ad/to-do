@@ -1,4 +1,4 @@
-from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, Form, Label, Button, I
+from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, Form, Label, Button, I, Script
 
 from auth.helper import get_login_url
 from auth.schemas import UserSchema
@@ -12,6 +12,19 @@ def SpaceCard(space: SpaceSchema):
         tasklists_view = [TasklistCard(tasklist) for tasklist in space.tasklists]
     except AttributeError as e:
         tasklists_view = []
+
+    # js = """
+    #         dragula([
+    #      """
+    # for tasklist in space.tasklists:
+    #     js += f"document.getElementById('tasklist_card_{tasklist.id}'), "
+    #
+    # js += "]);"
+    js = """
+        dragula([
+            document.getElementById('space_6'),
+
+        ]);"""
     return (
         Div(
             Ul(
@@ -24,10 +37,13 @@ def SpaceCard(space: SpaceSchema):
                 id=f'space_{getattr(space, 'id', None)}',
                 cls='flex flex-wrap gap-6'
             ),
+            hx_patch='/test',
+            hx_trigger='changed',
             id="space",
             cls='ml-64 py-10 pl-6'
-        )
-    )
+        ),
+
+    ), Script(js)
 
 
 def spaces_list_component_old(spaces: list[SpaceSchema]):
