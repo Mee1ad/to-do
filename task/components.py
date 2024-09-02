@@ -43,16 +43,23 @@ def TaskCard(task: TaskSchema):
                 name='task-check',
                 label='Done',
                 checked=task.checked,
-                hx_put='/task_checkbox',
+                hx_put='/task/checkbox',
                 hx_trigger='change',
                 hx_target=f'#task-{task.id}',
                 hx_vals=f'{{"task_id": "{task}"}}',
                 cls='checkbox w-4 h-4'
             ),
-            Label(
-                task.title,
-                id=f'task-label-{task.id}',
-                cls='flex text-lg justify-between px-2',
+            Input(
+                value=task.title,
+                type='text',
+                name='task_title',
+                hx_put='/task/title',
+                hx_trigger='change',
+                hx_target=f'#task-title-{task.id}',
+                # hx_swap='outerHTML transition:true',
+                hx_vals=f'{{"task_id": "{task.id}"}}',
+                id=f'task-title-{task.id}',
+                cls='flex text-lg justify-between px-2 bg-secondary border-none focus:ring-0 focus:outline-none',
             ),
             cls='flex items-center'
         ),

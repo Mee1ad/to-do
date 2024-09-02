@@ -2,7 +2,7 @@ from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
-from task.components import TaskCard, TaskInput, TaskCheckbox
+from task.components import TaskCard
 from task.models import Task
 from task.schemas import TaskCreateSchema
 from tasklist.models import TaskListTask
@@ -21,11 +21,17 @@ def create_task(task_text: str, tasklist_id: int):
     )
 
 
-@app.put('/task_checkbox')
-def update_task(task_id: int):
+@app.put('/task/checkbox')
+def update_task_checkbox(task_id: int):
     query = Task.update(checked=(Task.checked == 0)).where(Task.id == task_id)
     query.execute()
-    task = Task.get(id=task_id)
+
+
+@app.put('/task/title')
+def update_task_title(task_id: int, task_title: str):
+    print(2/0)
+    query = Task.update(title=task_title).where(Task.id == task_id)
+    query.execute()
 
 
 @app.delete('/task/{task_id}')
