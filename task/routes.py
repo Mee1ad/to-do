@@ -29,7 +29,6 @@ def update_task_checkbox(task_id: int):
 
 @app.put('/task/title')
 def update_task_title(task_id: int, task_title: str):
-    print(2/0)
     query = Task.update(title=task_title).where(Task.id == task_id)
     query.execute()
 

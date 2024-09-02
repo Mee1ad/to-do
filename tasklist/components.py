@@ -1,4 +1,4 @@
-from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, P, Form, I
+from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, Form, I, Button
 
 from constants import ENTER_KEY_CODE
 from task.components import TaskCard, TaskInput
@@ -56,7 +56,7 @@ def TasklistTitle(tasklist: TaskListSchema, **kwargs):
 
 def NewTasklistTitle(space_id: int):
     new_tasklist_title_id = f'new_task_title_{space_id}'
-    return (
+    return Div(
         Form(
             Input(
                 type='text',
@@ -65,13 +65,13 @@ def NewTasklistTitle(space_id: int):
                 autocomplete='off',
                 cls='block rounded-md border-0 p-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset'
                     ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
-                    ' sm:text-sm sm:leading-6'
+                    ' sm:text-sm sm:leading-6 w-full'
             ),
-            # Button(
-            #     I(cls='fa-plus fa-regular text-secondary'),
-            #     type='submit',
-            #     cls='bg-primary px-3.5 rounded-md',
-            # ),
+            Button(
+                I(cls='fa-plus fa-regular text-secondary'),
+                type='submit',
+                cls='bg-primary px-3.5 rounded-md',
+            ),
             hx_post='/tasklist',
             hx_trigger='submit',
             hx_target=f'#space_{space_id}',
@@ -83,7 +83,9 @@ def NewTasklistTitle(space_id: int):
             # **{'hx-on:htmx:after-request': "javascript:void(0);"}
             **{
                 'hx-on:htmx:before-request': "this.parentElement.classList.add('opacity-0'); setTimeout(() => this.parentElement.remove(), 10)"}
-        ),)
+        ),
+        cls='w-96'
+    )
 
 
 def tasklist_component_old(tasklist: TaskListSchema):
@@ -127,6 +129,6 @@ def TasklistCard(tasklist: TaskListSchema):
             ),
             TaskInput(tasklist.id),
             id=f'tasklist_card_{tasklist.id}',
-            cls='flex flex-col gap-2 shadow-md p-4 rounded-lg'
+            cls='flex flex-col gap-2 shadow-md p-4 rounded-lg cursor-grab'
         )
     )
