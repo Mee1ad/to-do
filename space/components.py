@@ -4,7 +4,7 @@ from auth.helper import get_login_url
 from auth.schemas import UserSchema
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
-from tasklist.components import TasklistCard, TasklistTitle
+from tasklist.components import TasklistCard, NewTasklistTitle
 
 
 def SpaceCard(space: SpaceSchema):
@@ -17,16 +17,15 @@ def SpaceCard(space: SpaceSchema):
             Ul(
                 *tasklists_view,
                 Div(
-                    TasklistTitle(space.id) if space else None,
+                    NewTasklistTitle(space.id) if space else None,
                     id='new_tasklist_title_component',
-                    cls='w-1/3'
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                cls='flex flex-wrap gap-8'
+                cls='flex flex-wrap gap-6'
             ),
             id="space",
-            cls='ml-64 py-10 pl-7'
+            cls='ml-64 py-10 pl-6'
         )
     )
 
