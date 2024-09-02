@@ -102,7 +102,7 @@ def SpaceInput():
                 cls='bg-primary px-3.5 rounded-md',
             ),
             hx_post='/space',
-            hx_trigger='click',
+            hx_trigger='submit',
             hx_target=f'#space_list',
             hx_swap='beforeend transition:true',
             hx_transition_in='fade-in-scale-up',
