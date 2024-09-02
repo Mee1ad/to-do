@@ -36,30 +36,25 @@ def tasklist_title_component_old(tasklist: TaskListSchema):
     )
 
 
-def TasklistTitleOld(tasklist: TaskListSchema, **kwargs):
-    item_id = f'task_title_{tasklist.id}'
-    return Div(
-        P(
-            tasklist.title,
-            type='text',
-            id=item_id,
-            name='tasklist_title',
-            value=tasklist.title,
-            placeholder='Add New List',
-            autocomplete='off',
-            hx_put='/tasklist',
-            hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
-            hx_target=f'#{item_id}',
-            hx_swap='outerHTML transition:true',
-            hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
-            hx_transition_in='fade-in-scale-up',
-            cls='inline text-primary font-bold'
-        ),
-        cls=''
-    )
+def TasklistTitle(tasklist: TaskListSchema, **kwargs):
+    item_id = f'task-title-{tasklist.id}'
+    return Input(
+        value=tasklist.title,
+        type='text',
+        id=item_id,
+        name='tasklist_title',
+        placeholder='Add New List',
+        autocomplete='off',
+        hx_put='/tasklist/title',
+        hx_trigger='change',
+        hx_target=f'#{item_id}',
+        hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
+        hx_transition_in='fade-in-scale-up',
+        cls='inline text-primary font-bold focus:outline-none text-2xl w-80'
+    ),
 
 
-def TasklistTitle(space_id: int):
+def NewTasklistTitle(space_id: int):
     new_tasklist_title_id = f'new_task_title_{space_id}'
     return (
         Form(
@@ -94,7 +89,7 @@ def TasklistTitle(space_id: int):
 def tasklist_component_old(tasklist: TaskListSchema):
     return (
         Div(
-            TasklistTitleOld(tasklist),
+            NewTasklistTitle(tasklist),
             Br(),
             Ul(
                 *[TaskCard(task) for task in tasklist.tasks],
@@ -113,7 +108,7 @@ def TasklistCard(tasklist: TaskListSchema):
         Fieldset(
             Legend('tasklist', cls='sr-only'),
             Div(
-                TasklistTitleOld(tasklist),
+                TasklistTitle(tasklist),
                 I(
                     hx_delete=f'/tasklist/{tasklist.id}',
                     hx_trigger=f'click',
@@ -132,6 +127,6 @@ def TasklistCard(tasklist: TaskListSchema):
             ),
             TaskInput(tasklist.id),
             id=f'tasklist_card_{tasklist.id}',
-            cls='flex flex-col w-96 gap-2 shadow-md p-4 rounded-lg'
+            cls='flex flex-col gap-2 shadow-md p-4 rounded-lg'
         )
     )
