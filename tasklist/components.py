@@ -120,7 +120,7 @@ def TasklistCard(tasklist: TaskListSchema):
                     hx_target=f'#tasklist_card_{tasklist.id}',
                     hx_swap='delete transition:true',
                     hx_transition_in='fade-in-scale-up',
-                    cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md'
+                    cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md'
                 ),
                 cls='flex items-center justify-between mb-8'
             ),

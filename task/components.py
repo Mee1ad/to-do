@@ -62,10 +62,11 @@ def TaskCard(task: TaskSchema):
             hx_target=f'#task-{task.id}',
             hx_swap='delete transition:true',
             hx_transition_in='fade-in-scale-up',
-            cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md'
+            cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100'
+                ' transition-all'
         ),
         id=f'task-{task.id}',
-        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between'
+        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between group'
     )
 
 
