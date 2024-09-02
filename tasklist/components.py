@@ -120,7 +120,7 @@ def TasklistCard(tasklist: TaskListSchema):
                     hx_target=f'#tasklist_card_{tasklist.id}',
                     hx_swap='delete transition:true',
                     hx_transition_in='fade-in-scale-up',
-                    cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md'
+                    cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md cursor-pointer'
                 ),
                 cls='flex items-center justify-between mb-8'
             ),
@@ -132,6 +132,6 @@ def TasklistCard(tasklist: TaskListSchema):
             ),
             TaskInput(tasklist.id),
             id=f'tasklist_card_{tasklist.id}',
-            cls='flex flex-col w-56 gap-2 shadow-md p-4 rounded-lg'
+            cls='flex flex-col w-96 gap-2 shadow-md p-4 rounded-lg'
         )
     )

@@ -1,10 +1,10 @@
 from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, Form, Label, Button, I
 
+from auth.helper import get_login_url
+from auth.schemas import UserSchema
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
 from tasklist.components import TasklistCard, TasklistTitle
-from auth.helper import get_login_url
-from auth.schemas import UserSchema
 
 
 def SpaceCard(space: SpaceSchema):
@@ -19,14 +19,14 @@ def SpaceCard(space: SpaceSchema):
                 Div(
                     TasklistTitle(space.id) if space else None,
                     id='new_tasklist_title_component',
-                    cls='w-1/5'
+                    cls='w-1/3'
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                cls='flex flex-wrap gap-16'
+                cls='flex flex-wrap gap-4'
             ),
             id="space",
-            cls='ml-64 py-10 pl-16'
+            cls='ml-64 py-10 pl-8'
         )
     )
 
@@ -113,17 +113,30 @@ def SpaceInput():
 
 
 def SpaceTitle(space: SpaceSchema):
-    return P(
-        Span(space.title, cls='mx-2 text-sm font-medium'),
-        hx_get=f'/space/{space.id}',
-        # hx_replace_url=f'/space/{space.id}/{space.title}',
-        hx_trigger=f'click',
-        hx_target='#space',
-        hx_swap='outerHTML transition:true',
-        hx_transition_in='fade-in-scale-up',
-        cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
-            ' rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-            ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
+    return Div(
+        P(
+            Span(space.title, cls='mx-2 text-sm font-medium'),
+            hx_get=f'/space/{space.id}',
+            # hx_replace_url=f'/space/{space.id}/{space.title}',
+            hx_trigger=f'click',
+            hx_target='#space',
+            hx_swap='outerHTML transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
+                '  dark:text-gray-200 '
+                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
+        ),
+        I(
+            hx_delete=f'/space/{space.id}',
+            hx_trigger=f'click',
+            hx_target=f'#space-title-{space.id}',
+            hx_swap='delete transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100 '
+                'transition-all cursor-pointer'
+        ),
+        id=f'space-title-{space.id}',
+        cls='flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'
     )
 
 
