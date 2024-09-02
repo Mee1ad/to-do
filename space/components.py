@@ -23,10 +23,10 @@ def SpaceCard(space: SpaceSchema):
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                cls='flex flex-wrap gap-4'
+                cls='flex flex-wrap gap-8'
             ),
             id="space",
-            cls='ml-64 py-10 pl-8'
+            cls='ml-64 py-10 pl-7'
         )
     )
 
