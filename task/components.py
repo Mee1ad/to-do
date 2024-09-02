@@ -36,24 +36,36 @@ def TaskDelete(task: TaskSchema):
 
 def TaskCard(task: TaskSchema):
     return Div(
-        Input(
-            id=f'task-{task.id}',
-            type='checkbox',
-            name='task-check',
-            label='Done',
-            checked=task.checked,
-            hx_put='/task_checkbox',
-            hx_trigger='change',
+        Div(
+            Input(
+                id=f'task-checkbox-{task.id}',
+                type='checkbox',
+                name='task-check',
+                label='Done',
+                checked=task.checked,
+                hx_put='/task_checkbox',
+                hx_trigger='change',
+                hx_target=f'#task-{task.id}',
+                hx_vals=f'{{"task_id": "{task}"}}',
+                cls='checkbox w-4 h-4'
+            ),
+            Label(
+                task.title,
+                id=f'task-label-{task.id}',
+                cls='flex text-lg justify-between px-2',
+            ),
+            cls='flex items-center'
+        ),
+        I(
+            hx_delete=f'/task/{task.id}',
+            hx_trigger=f'click',
             hx_target=f'#task-{task.id}',
-            hx_vals=f'{{"task_id": "{task}"}}',
-            cls='checkbox w-4 h-4'
+            hx_swap='delete transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md'
         ),
-        Label(
-            task.title,
-            id=f'task_{task.id}',
-            cls='flex text-lg justify-between px-2',
-        ),
-        cls='flex items-center bg-secondary px-2 py-1 rounded-md'
+        id=f'task-{task.id}',
+        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between'
     )
 
 
