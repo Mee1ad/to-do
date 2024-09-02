@@ -4,10 +4,10 @@ from pydantic import ValidationError
 from app_init import app
 from auth.helper import get_user_from_session
 from auth.schemas import UserSchema
-from tasklist.components import TasklistComponent, TasklistTitle, TasklistTitleOld
+from space.models import SpaceTaskList
+from tasklist.components import TasklistCard, TasklistTitle, TasklistTitleOld
 from tasklist.models import TaskList, TaskListTask
 from tasklist.schemas import TaskListCreateSchema, TaskListUpdateSchema
-from space.models import SpaceTaskList
 
 
 @app.post('/tasklist')
@@ -20,7 +20,7 @@ def create_tasklist(tasklist_title: str, space_id: int, session):
     tasklist = TaskList.create(title=tasklist_title.capitalize(), user_id=user.id)
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
-        TasklistComponent(tasklist),
+        TasklistCard(tasklist),
         Div(
             TasklistTitle(space_id),
             id='new_tasklist_title_component',

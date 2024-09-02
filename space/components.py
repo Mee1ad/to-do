@@ -2,14 +2,14 @@ from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, 
 
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
-from tasklist.components import TasklistComponent, TasklistTitle
+from tasklist.components import TasklistCard, TasklistTitle
 from auth.helper import get_login_url
 from auth.schemas import UserSchema
 
 
-def Space(space: SpaceSchema):
+def SpaceCard(space: SpaceSchema):
     try:
-        tasklists_view = [TasklistComponent(tasklist) for tasklist in space.tasklists]
+        tasklists_view = [TasklistCard(tasklist) for tasklist in space.tasklists]
     except AttributeError as e:
         tasklists_view = []
     return (
@@ -25,7 +25,7 @@ def Space(space: SpaceSchema):
                 id=f'space_{getattr(space, 'id', None)}',
                 cls='flex flex-wrap gap-16'
             ),
-            id="space_component",
+            id="space",
             cls='ml-64 py-10 pl-16'
         )
     )
@@ -118,7 +118,7 @@ def SpaceTitle(space: SpaceSchema):
         hx_get=f'/space/{space.id}',
         # hx_replace_url=f'/space/{space.id}/{space.title}',
         hx_trigger=f'click',
-        hx_target=f'#space_component',
+        hx_target='#space',
         hx_swap='outerHTML transition:true',
         hx_transition_in='fade-in-scale-up',
         cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'

@@ -8,7 +8,7 @@ from auth.helper import get_user_from_session
 from auth.models import User, Login
 from auth.schemas import UserSchema
 from db.helper import get_space_by_id
-from space.components import Space, SpacesList, SpaceTitle
+from space.components import SpaceCard, SpacesList, SpaceTitle
 from space.models import Space, SpaceTaskList
 from space.schemas import SpaceCreateSchema
 
@@ -16,7 +16,7 @@ from space.schemas import SpaceCreateSchema
 @app.get('/space/{space_id}')
 def get_space(space_id: int):
     space = get_space_by_id(space_id)
-    return Space(space)
+    return SpaceCard(space)
 
 
 @app.get('/space/{space_id}/{space_title}')
@@ -28,7 +28,7 @@ def get_public_space(space_id: int, space_title: str, session):
         session['user_id'] = user.id
     spaces = Space.select().where(Space.user_id == user.id).execute()
     space = get_space_by_id(space_id)
-    return SpacesList(spaces), Space(space)
+    return SpacesList(spaces, user), SpaceCard(space)
 
 
 @app.post('/space')

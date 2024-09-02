@@ -1,7 +1,7 @@
 from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, P, Form, I
 
 from constants import ENTER_KEY_CODE
-from task.components import Task, TaskInput
+from task.components import TaskCard, TaskInput
 from tasklist.schemas import TaskListSchema
 
 
@@ -97,7 +97,7 @@ def tasklist_component_old(tasklist: TaskListSchema):
             TasklistTitleOld(tasklist),
             Br(),
             Ul(
-                *[Task(task) for task in tasklist.tasks],
+                *[TaskCard(task) for task in tasklist.tasks],
                 TaskInput(tasklist.id),
                 cls='text-2xl',
                 id='tasklist'
@@ -108,7 +108,7 @@ def tasklist_component_old(tasklist: TaskListSchema):
     )
 
 
-def TasklistComponent(tasklist: TaskListSchema):
+def TasklistCard(tasklist: TaskListSchema):
     return (
         Fieldset(
             Legend('tasklist', cls='sr-only'),
@@ -126,7 +126,7 @@ def TasklistComponent(tasklist: TaskListSchema):
             ),
 
             Div(
-                *[Task(task) for task in tasklist.tasks],
+                *[TaskCard(task) for task in tasklist.tasks],
                 id=f'tasklist_{tasklist.id}',
                 cls='flex flex-col gap-2'
             ),

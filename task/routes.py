@@ -2,7 +2,7 @@ from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
-from task.components import Task, TaskInput, TaskCheckbox
+from task.components import TaskCard, TaskInput, TaskCheckbox
 from task.models import Task
 from task.schemas import TaskCreateSchema
 from tasklist.models import TaskListTask
@@ -17,7 +17,7 @@ def create_task(task_text: str, tasklist_id: int):
     task = Task.create(title=task_text.capitalize())
     tasklist_task = TaskListTask.create(tasklist_id=tasklist_id, task_id=task.id)
     return (
-        Task(task),
+        TaskCard(task),
     )
 
 

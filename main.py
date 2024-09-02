@@ -26,7 +26,7 @@ def home_page(session):
     return Div(
         Div(
             SpacesList(spaces, user),
-            Space(space),
+            SpaceCard(space),
             cls='flex',
         )
 

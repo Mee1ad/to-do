@@ -34,7 +34,7 @@ def TaskDelete(task: TaskSchema):
     )
 
 
-def Task(task: TaskSchema):
+def TaskCard(task: TaskSchema):
     return Div(
         Input(
             id=f'task-{task.id}',
