@@ -5,7 +5,7 @@ from fasthtml.common import A, Div
 
 from auth.helper import get_login_url
 from auth.routes import *
-from space.components import spaces_list_component
+from space.components import SpacesList
 from space.routes import *
 # noinspection PyUnresolvedReferences
 from task.routes import *
@@ -25,8 +25,8 @@ def home_page(session):
     space = get_space_by_id(first_space_id)
     return Div(
         Div(
-            spaces_list_component(spaces, user),
-            space_component(space),
+            SpacesList(spaces, user),
+            Space(space),
             cls='flex',
         )
 
