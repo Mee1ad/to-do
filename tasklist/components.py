@@ -1,8 +1,8 @@
-from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, Label, P, Button, Svg, Path, Form, I
+from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, P, Form, I
 
 from constants import ENTER_KEY_CODE
+from task.components import Task, TaskInput
 from tasklist.schemas import TaskListSchema
-from task.components import task_component, new_task_input_component
 
 
 def tasklist_title_component_old(tasklist: TaskListSchema):
@@ -36,7 +36,7 @@ def tasklist_title_component_old(tasklist: TaskListSchema):
     )
 
 
-def tasklist_title_component(tasklist: TaskListSchema, **kwargs):
+def TasklistTitleOld(tasklist: TaskListSchema, **kwargs):
     item_id = f'task_title_{tasklist.id}'
     return Div(
         P(
@@ -59,7 +59,7 @@ def tasklist_title_component(tasklist: TaskListSchema, **kwargs):
     )
 
 
-def new_tasklist_title_component(space_id: int):
+def TasklistTitle(space_id: int):
     new_tasklist_title_id = f'new_task_title_{space_id}'
     return (
         Form(
@@ -94,11 +94,11 @@ def new_tasklist_title_component(space_id: int):
 def tasklist_component_old(tasklist: TaskListSchema):
     return (
         Div(
-            tasklist_title_component(tasklist),
+            TasklistTitleOld(tasklist),
             Br(),
             Ul(
-                *[task_component(task) for task in tasklist.tasks],
-                new_task_input_component(tasklist.id),
+                *[Task(task) for task in tasklist.tasks],
+                TaskInput(tasklist.id),
                 cls='text-2xl',
                 id='tasklist'
             ),
@@ -108,12 +108,12 @@ def tasklist_component_old(tasklist: TaskListSchema):
     )
 
 
-def tasklist_component(tasklist: TaskListSchema):
+def TasklistComponent(tasklist: TaskListSchema):
     return (
         Fieldset(
             Legend('tasklist', cls='sr-only'),
             Div(
-                tasklist_title_component(tasklist),
+                TasklistTitleOld(tasklist),
                 I(
                     hx_delete=f'/tasklist/{tasklist.id}',
                     hx_trigger=f'click',
@@ -126,11 +126,11 @@ def tasklist_component(tasklist: TaskListSchema):
             ),
 
             Div(
-                *[task_component(task) for task in tasklist.tasks],
+                *[Task(task) for task in tasklist.tasks],
                 id=f'tasklist_{tasklist.id}',
                 cls='flex flex-col gap-2'
             ),
-            new_task_input_component(tasklist.id),
+            TaskInput(tasklist.id),
             id=f'tasklist_card_{tasklist.id}',
             cls='flex flex-col w-56 gap-2 shadow-md p-4 rounded-lg'
         )

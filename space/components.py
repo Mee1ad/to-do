@@ -2,14 +2,14 @@ from fasthtml.common import Aside, H3, Nav, P, Span, Ul, Li, Div, Input, Br, A, 
 
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
-from tasklist.components import tasklist_component, new_tasklist_title_component
+from tasklist.components import TasklistComponent, TasklistTitle
 from auth.helper import get_login_url
 from auth.schemas import UserSchema
 
 
-def space_component(space: SpaceSchema):
+def Space(space: SpaceSchema):
     try:
-        tasklists_view = [tasklist_component(tasklist) for tasklist in space.tasklists]
+        tasklists_view = [TasklistComponent(tasklist) for tasklist in space.tasklists]
     except AttributeError as e:
         tasklists_view = []
     return (
@@ -17,7 +17,7 @@ def space_component(space: SpaceSchema):
             Ul(
                 *tasklists_view,
                 Div(
-                    new_tasklist_title_component(space.id) if space else None,
+                    TasklistTitle(space.id) if space else None,
                     id='new_tasklist_title_component',
                     cls='w-1/5'
                 ),
@@ -88,7 +88,7 @@ def spaces_list_component_old(spaces: list[SpaceSchema]):
     ),
 
 
-def new_space_input_component():
+def SpaceInput():
     return (
         Form(
             Label('Title', fr='name',
@@ -112,7 +112,7 @@ def new_space_input_component():
     )
 
 
-def space_title_component(space: SpaceSchema):
+def SpaceTitle(space: SpaceSchema):
     return P(
         Span(space.title, cls='mx-2 text-sm font-medium'),
         hx_get=f'/space/{space.id}',
@@ -127,7 +127,7 @@ def space_title_component(space: SpaceSchema):
     )
 
 
-def spaces_list_component(spaces: list[SpaceSchema], user: UserSchema):
+def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
     login_button_component = A(
         'Login',
         href=get_login_url(),
@@ -148,13 +148,13 @@ def spaces_list_component(spaces: list[SpaceSchema], user: UserSchema):
                         cls='flex justify-between items-center'
                     ),
 
-                    *[space_title_component(space) for space in spaces],
+                    *[SpaceTitle(space) for space in spaces],
                     id='space_list',
                     cls='space-y-3'
                 ),
                 cls='flex flex-col justify-between flex-1 mt-6'
             ),
-            new_space_input_component(),
+            SpaceInput(),
             cls='flex flex-col w-64 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'
                 ' dark:bg-gray-900 dark:border-gray-700 py-2 fixed',
         )

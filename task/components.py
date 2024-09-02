@@ -1,17 +1,16 @@
-from fasthtml.common import Input, Div, Li, Span, Button, Svg, Path, Label, P, I, Form
+from fasthtml.common import Input, Div, Li, Span, Button, Label, I, Form
 
-from constants import ENTER_KEY_CODE
 from task.schemas import TaskSchema
 
 
-def task_checkbox_component(task: TaskSchema):
+def TaskCheckbox(task: TaskSchema):
     return (
 
 
     )
 
 
-def task_delete_component(task: TaskSchema):
+def TaskDelete(task: TaskSchema):
     return (
         Div(
             Li(
@@ -28,14 +27,14 @@ def task_delete_component(task: TaskSchema):
                 task.title,
                 cls='list-none'
             ),
-            task_checkbox_component(task),
+            TaskCheckbox(task),
             id=f'task_{task.id}',
             cls='flex text-lg justify-between bg-secondary px-2 rounded-md',
         )
     )
 
 
-def task_component(task: TaskSchema):
+def Task(task: TaskSchema):
     return Div(
         Input(
             id=f'task-{task.id}',
@@ -58,7 +57,7 @@ def task_component(task: TaskSchema):
     )
 
 
-def new_task_input_component(tasklist_id: int):
+def TaskInput(tasklist_id: int):
     return (
         Form(
             Input(type='text',

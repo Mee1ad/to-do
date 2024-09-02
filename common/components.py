@@ -1,7 +1,7 @@
 from fasthtml.common import *
 
 
-def input_text_component(**kwargs):
+def InputText(**kwargs):
     return (
         Input(
             type='text',
@@ -14,7 +14,7 @@ def input_text_component(**kwargs):
     )
 
 
-def plus_button_component(**kwargs):
+def PlusButton(**kwargs):
     return (
         Button(
             I(cls='fa-regular fa-plus text-gray-100'),
@@ -26,11 +26,11 @@ def plus_button_component(**kwargs):
     )
 
 
-def add_form_component(**kwargs):
+def SimpleForm(**kwargs):
     return (
         Div(
-            input_text_component(),
-            plus_button_component(),
+            InputText(),
+            PlusButton(),
             **kwargs,
             cls='flex gap-2',
         )
