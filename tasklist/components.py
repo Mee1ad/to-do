@@ -106,29 +106,36 @@ def tasklist_component_old(tasklist: TaskListSchema):
 
 
 def TasklistCard(tasklist: TaskListSchema):
-    return (
-        Fieldset(
-            Legend('tasklist', cls='sr-only'),
-            Div(
-                TasklistTitle(tasklist),
-                I(
-                    hx_delete=f'/tasklist/{tasklist.id}',
-                    hx_trigger=f'click',
-                    hx_target=f'#tasklist_card_{tasklist.id}',
-                    hx_swap='delete transition:true',
-                    hx_transition_in='fade-in-scale-up',
-                    cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md cursor-pointer'
-                ),
-                cls='flex items-center justify-between mb-8'
+    return Fieldset(
+        Input(
+            name='tasklist',
+            value=tasklist.id,
+            type='hidden'
+        ),
+        Legend('tasklist', cls='sr-only'),
+        Div(
+            TasklistTitle(tasklist),
+            I(
+                hx_delete=f'/tasklist/{tasklist.id}',
+                hx_trigger=f'click',
+                hx_target=f'#tasklist_card_{tasklist.id}',
+                hx_swap='delete transition:true',
+                hx_transition_in='fade-in-scale-up',
+                cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md cursor-pointer'
             ),
+            cls='flex items-center justify-between mb-8'
+        ),
 
-            Div(
-                *[TaskCard(task) for task in tasklist.tasks],
-                id=f'tasklist_{tasklist.id}',
-                cls='flex flex-col gap-2'
-            ),
-            TaskInput(tasklist.id),
-            id=f'tasklist_card_{tasklist.id}',
-            cls='flex flex-col gap-2 shadow-md p-4 rounded-lg cursor-grab'
-        )
+        Div(
+            *[TaskCard(task) for task in tasklist.tasks],
+            id=f'tasklist_{tasklist.id}',
+            hx_patch=f'/tasklist/{tasklist.id}/sort',
+            hx_trigger='end',
+            hx_swap='none',
+            hx_include="[name='task']",
+            cls='flex flex-col gap-2 sortable'
+        ),
+        TaskInput(tasklist.id),
+        id=f'tasklist_card_{tasklist.id}',
+        cls='flex flex-col gap-2 shadow-md p-4 rounded-lg'
     )

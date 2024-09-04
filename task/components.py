@@ -1,4 +1,4 @@
-from fasthtml.common import Input, Div, Li, Span, Button, Label, I, Form
+from fasthtml.common import Input, Div, Li, Span, Button, I, Form
 
 from task.schemas import TaskSchema
 
@@ -38,6 +38,11 @@ def TaskCard(task: TaskSchema):
     return Div(
         Div(
             Input(
+                name='task',
+                value=task.id,
+                type='hidden'
+            ),
+            Input(
                 id=f'task-checkbox-{task.id}',
                 type='checkbox',
                 name='task-check',
@@ -74,7 +79,7 @@ def TaskCard(task: TaskSchema):
                 ' transition-all cursor-pointer'
         ),
         id=f'task-{task.id}',
-        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between group'
+        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between group cursor-grab'
     )
 
 

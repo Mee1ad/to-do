@@ -29,6 +29,7 @@ class Space(BaseModel):
 class SpaceTaskList(BaseModel):
     space = ForeignKeyField(Space, backref='space_tasklists', on_delete='CASCADE', on_update='CASCADE')
     tasklist = ForeignKeyField(TaskList, backref='space_tasklists', on_delete='CASCADE', on_update='CASCADE')
+    order = IntegerField()
 
     class Meta:
         table_name = 'space_tasklist'

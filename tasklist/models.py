@@ -31,6 +31,7 @@ class TaskList(BaseModel):
 class TaskListTask(BaseModel):
     tasklist = ForeignKeyField(TaskList, backref='tasklist_tasks', on_delete='CASCADE', on_update='CASCADE')
     task = ForeignKeyField(Task, backref='tasklist_tasks', on_delete='CASCADE', on_update='CASCADE')
+    order = IntegerField(default=0)
 
     class Meta:
         table_name = 'tasklist_task'

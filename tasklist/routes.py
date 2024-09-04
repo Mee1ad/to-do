@@ -42,3 +42,10 @@ def delete_tasklist(tasklist_id: int):
     TaskListTask.delete().where(TaskListTask.tasklist == tasklist_id).execute()
     SpaceTaskList.delete().where(SpaceTaskList.tasklist == tasklist_id).execute()
     TaskList.delete().where(TaskList.id == tasklist_id).execute()
+
+
+@app.patch('/tasklist/{tasklist_id}/sort')
+def sort_tasks(tasklist_id: int, task: list[int]):
+    for index, task_id in enumerate(task):
+        TaskListTask.update(order=index).where(TaskListTask.tasklist == tasklist_id,
+                                               TaskListTask.task == task_id).execute()

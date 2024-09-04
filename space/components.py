@@ -13,21 +13,25 @@ def SpaceCard(space: SpaceSchema):
     except AttributeError as e:
         tasklists_view = []
 
-    # js = """
-    #         dragula([
-    #      """
-    # for tasklist in space.tasklists:
-    #     js += f"document.getElementById('tasklist_card_{tasklist.id}'), "
-    #
-    # js += "]);"
     js = """
-        dragula([
-            document.getElementById('space_6'),
-
-        ]);"""
+            htmx.onLoad(function(content) {
+                var sortables = content.querySelectorAll(".sortable");
+                for (var i = 0; i < sortables.length; i++) {
+                    var sortable = sortables[i];
+                    var sortableInstance = new Sortable(sortable, {
+                        animation: 150,
+                        ghostClass: 'blue-background-class',
+                        
+                        onEnd: function (evt) {
+                            console.log(evt);
+                          }
+                    });
+                }
+            })
+    """
     return (
         Div(
-            Ul(
+            Div(
                 *tasklists_view,
                 Div(
                     NewTasklistTitle(space.id) if space else None,
@@ -35,9 +39,13 @@ def SpaceCard(space: SpaceSchema):
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                cls='flex flex-wrap gap-6'
+                hx_patch=f'/space/{space.id}/sort',
+                hx_trigger='end',
+                hx_swap='none',
+                hx_include="[name='tasklist']",
+                cls='flex flex-wrap gap-6 sortable'
             ),
-            hx_patch='/test',
+            hx_patch='/test3',
             hx_trigger='changed',
             id="space",
             cls='ml-64 py-10 pl-6'
