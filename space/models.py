@@ -1,4 +1,4 @@
-from peewee import AutoField, CharField, ForeignKeyField
+from peewee import AutoField, CharField, IntegerField, ForeignKeyField
 
 from auth.models import User
 from settings import BaseModel
@@ -12,12 +12,11 @@ class Space(BaseModel):
 
     @property
     def space_tasklists(self):
-        return []
+        return SpaceTaskList.select().where(SpaceTaskList.space == self)
 
     @property
     def tasklists(self):
         tasklists = []
-        print('self.space_tasklists', self.space_tasklists)
         if self.space_tasklists:
             for space_tasklist in self.space_tasklists:
                 tasklist = space_tasklist.tasklist

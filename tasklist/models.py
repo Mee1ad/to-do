@@ -1,4 +1,4 @@
-from peewee import AutoField, CharField, ForeignKeyField
+from peewee import AutoField, CharField, IntegerField, ForeignKeyField
 
 from auth.models import User
 from settings import BaseModel
@@ -12,7 +12,7 @@ class TaskList(BaseModel):
 
     @property
     def tasklist_tasks(self):  # prefetched TaskListTask
-        return []
+        return TaskListTask.select().where(TaskListTask.tasklist == self)
 
     @property
     def tasks(self):
