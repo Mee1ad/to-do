@@ -22,6 +22,8 @@ class Space(BaseModel):
             ordered_space_tasklists = sorted(self.space_tasklists, key=lambda x: x.order)
             for space_tasklist in ordered_space_tasklists:
                 tasklist = space_tasklist.tasklist
+                if tasklist.archived:
+                    continue
                 tasklist.space_id = space_tasklist.tasklist_id
                 tasklists.append(tasklist)
         return tasklists

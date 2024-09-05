@@ -1,4 +1,4 @@
-from peewee import AutoField, CharField, IntegerField, ForeignKeyField
+from peewee import AutoField, CharField, IntegerField, BooleanField, ForeignKeyField
 
 from auth.models import User
 from settings import BaseModel
@@ -9,6 +9,7 @@ class TaskList(BaseModel):
     id = AutoField(primary_key=True)
     title = CharField()
     user_id = ForeignKeyField(User, backref='tasklists', null=False, on_delete='CASCADE', on_update='CASCADE')
+    archived = BooleanField(default=False)
 
     @property
     def tasklist_tasks(self):  # prefetched TaskListTask

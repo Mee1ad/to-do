@@ -168,6 +168,25 @@ def SpaceTitle(space: SpaceSchema):
     )
 
 
+def ArchiveTitle():
+    return Div(
+        P(
+            Span('Archive', cls='mx-2 text-sm font-medium'),
+            hx_get=f'/archive',
+            # hx_replace_url=f'/space/{space.id}/{space.title}',
+            hx_trigger=f'click',
+            hx_target='#space',
+            hx_swap='outerHTML transition:true',
+            hx_transition_in='fade-in-scale-up',
+            cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
+                '  dark:text-gray-200 '
+                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
+        ),
+        id=f'archive_menu',
+        cls='flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'
+    )
+
+
 def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
     login_button_component = A(
         'Login',
@@ -186,18 +205,21 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
                     Div(
                         P('Spaces', cls='font-bold'),
                         login_button_component,
-                        cls='flex justify-between items-center'
+                        cls='flex justify-between items-center pt-2 pb-4'
                     ),
-
-                    *[SpaceTitle(space) for space in spaces],
-                    id='space_list',
-                    hx_patch='/space/sort',
-                    hx_trigger='end',
-                    hx_swap='none',
-                    hx_include="[name='spaces']",
-                    cls='space-y-3 sortable'
+                    Div(
+                        *[SpaceTitle(space) for space in spaces],
+                        id='space_list',
+                        hx_patch='/space/sort',
+                        hx_trigger='end',
+                        hx_swap='none',
+                        hx_include="[name='spaces']",
+                        cls='space-y-3 sortable'
+                    ),
+                    ArchiveTitle(),
+                    cls='space-y-3'
                 ),
-                cls='flex flex-col justify-between flex-1 mt-6'
+                cls='flex flex-col justify-between flex-1 mt-6',
             ),
             SpaceInput(),
             cls='flex flex-col w-64 h-screen px-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l'

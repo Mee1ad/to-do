@@ -1,6 +1,6 @@
 import uuid
 
-from fasthtml.common import JSONResponse
+from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
@@ -11,6 +11,8 @@ from db.helper import get_space_by_id
 from space.components import SpaceCard, SpacesList, SpaceTitle
 from space.models import Space, SpaceTaskList
 from space.schemas import SpaceCreateSchema
+from tasklist.models import TaskList
+from tasklist.components import TasklistCard, NewTasklistTitle
 
 
 @app.get('/space/{space_id}')
@@ -29,6 +31,29 @@ def get_public_space(space_id: int, space_title: str, session):
     spaces = Space.select().where(Space.user_id == user.id).execute()
     space = get_space_by_id(space_id)
     return SpacesList(spaces, user), SpaceCard(space)
+
+
+@app.get('/archive')
+def get_archive(session):
+    user = get_user_from_session(session)
+    tasklists = TaskList.select().where(TaskList.user_id == user.id, TaskList.archived == True).execute()
+    tasklists_view = [TasklistCard(tasklist) for tasklist in tasklists]
+    return (
+        Div(
+            Div(
+                *tasklists_view,
+                id=f'archive',
+                hx_patch=f'/space/archive/sort',
+                hx_trigger='end',
+                hx_swap='none',
+                hx_include="[name='tasklists']",
+                cls='flex flex-wrap gap-6 sortable'
+            ),
+            id="space",
+            cls='ml-64 py-10 pl-6'
+        ),
+
+    )
 
 
 @app.post('/space')
