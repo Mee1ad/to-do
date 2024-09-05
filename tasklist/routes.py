@@ -5,7 +5,7 @@ from app_init import app
 from auth.helper import get_user_from_session
 from auth.schemas import UserSchema
 from space.models import SpaceTaskList
-from tasklist.components import TasklistCard, NewTasklistTitle
+from tasklist.components import TasklistCard, NewTasklistTitle, TasklistTitle
 from tasklist.models import TaskList, TaskListTask
 from tasklist.schemas import TaskListCreateSchema, TaskListUpdateSchema
 
@@ -34,7 +34,10 @@ def update_tasklist(tasklist_id: int, tasklist_title: str):
         TaskListUpdateSchema(id=tasklist_id, title=tasklist_title)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    TaskList.update(title=tasklist_title.capitalize()).where(TaskList.id == tasklist_id).execute()
+    updated = TaskList.update(title=tasklist_title.capitalize()).where(TaskList.id == tasklist_id).execute()
+    tasklist = TaskList.get(id=tasklist_id)
+    if updated:
+        return TasklistTitle(tasklist)
 
 
 @app.delete('/tasklist/{tasklist_id}')

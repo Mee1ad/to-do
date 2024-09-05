@@ -48,6 +48,7 @@ def TasklistTitle(tasklist: TaskListSchema, **kwargs):
         hx_put='/tasklist/title',
         hx_trigger='change',
         hx_target=f'#{item_id}',
+        hx_swap='outerHTML transition:true',
         hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
         hx_transition_in='fade-in-scale-up',
         cls='inline text-primary font-bold focus:outline-none text-2xl w-80'
