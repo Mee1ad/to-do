@@ -18,7 +18,8 @@ class TaskList(BaseModel):
     def tasks(self):
         tasks = []
         if self.tasklist_tasks:
-            for tasklist_tasks in self.tasklist_tasks:
+            ordered_tasklist_tasks = sorted(self.tasklist_tasks, key=lambda x: x.order)
+            for tasklist_tasks in ordered_tasklist_tasks:
                 task = tasklist_tasks.task
                 task.tasklist_id = tasklist_tasks.tasklist_id
                 tasks.append(tasklist_tasks.task)
@@ -31,7 +32,7 @@ class TaskList(BaseModel):
 class TaskListTask(BaseModel):
     tasklist = ForeignKeyField(TaskList, backref='tasklist_tasks', on_delete='CASCADE', on_update='CASCADE')
     task = ForeignKeyField(Task, backref='tasklist_tasks', on_delete='CASCADE', on_update='CASCADE')
-    order = IntegerField(default=0)
+    order = IntegerField(default=99)
 
     class Meta:
         table_name = 'tasklist_task'

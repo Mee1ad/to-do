@@ -38,7 +38,7 @@ def TaskCard(task: TaskSchema):
     return Div(
         Div(
             Input(
-                name='task',
+                name='tasks',
                 value=task.id,
                 type='hidden'
             ),

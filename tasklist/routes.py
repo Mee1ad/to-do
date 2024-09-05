@@ -45,7 +45,7 @@ def delete_tasklist(tasklist_id: int):
 
 
 @app.patch('/tasklist/{tasklist_id}/sort')
-def sort_tasks(tasklist_id: int, task: list[int]):
-    for index, task_id in enumerate(task):
+def sort_tasks(tasklist_id: int, tasks: list[int]):
+    for index, task_id in enumerate(tasks):
         TaskListTask.update(order=index).where(TaskListTask.tasklist == tasklist_id,
                                                TaskListTask.task == task_id).execute()

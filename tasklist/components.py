@@ -108,7 +108,7 @@ def tasklist_component_old(tasklist: TaskListSchema):
 def TasklistCard(tasklist: TaskListSchema):
     return Fieldset(
         Input(
-            name='tasklist',
+            name='tasklists',
             value=tasklist.id,
             type='hidden'
         ),
@@ -132,7 +132,7 @@ def TasklistCard(tasklist: TaskListSchema):
             hx_patch=f'/tasklist/{tasklist.id}/sort',
             hx_trigger='end',
             hx_swap='none',
-            hx_include="[name='task']",
+            hx_include="[name='tasks']",
             cls='flex flex-col gap-2 sortable'
         ),
         TaskInput(tasklist.id),

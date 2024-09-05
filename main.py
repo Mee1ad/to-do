@@ -1,11 +1,5 @@
-import uuid
-
 from fasthtml import serve
-from fasthtml.common import A, Div
 
-from auth.helper import get_login_url
-from auth.routes import *
-from space.components import SpacesList
 from space.routes import *
 # noinspection PyUnresolvedReferences
 from task.routes import *
@@ -19,8 +13,8 @@ def home_page(session):
         user: UserSchema = User.create(name='Guest')
         Login.create(user_id=user.id, provider='session', connection_id=uuid.uuid4().hex)
         session['user_id'] = user.id
-    spaces = Space.select().where(Space.user_id == user.id).execute()
-    first_space = Space.select().where(Space.user_id == user.id).first()
+    spaces = Space.select().where(Space.user_id == user.id).order_by(Space.order).execute()
+    first_space = Space.select().where(Space.user_id == user.id).order_by(Space.order).first()
     first_space_id = first_space.id if first_space else None
     space = get_space_by_id(first_space_id)
     return Div(

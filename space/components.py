@@ -42,7 +42,7 @@ def SpaceCard(space: SpaceSchema):
                 hx_patch=f'/space/{space.id}/sort',
                 hx_trigger='end',
                 hx_swap='none',
-                hx_include="[name='tasklist']",
+                hx_include="[name='tasklists']",
                 cls='flex flex-wrap gap-6 sortable'
             ),
             hx_patch='/test3',
@@ -137,6 +137,11 @@ def SpaceInput():
 
 def SpaceTitle(space: SpaceSchema):
     return Div(
+        Input(
+            name='spaces',
+            value=space.id,
+            type='hidden'
+        ),
         P(
             Span(space.title, cls='mx-2 text-sm font-medium'),
             hx_get=f'/space/{space.id}',
@@ -186,7 +191,11 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
 
                     *[SpaceTitle(space) for space in spaces],
                     id='space_list',
-                    cls='space-y-3'
+                    hx_patch='/space/sort',
+                    hx_trigger='end',
+                    hx_swap='none',
+                    hx_include="[name='spaces']",
+                    cls='space-y-3 sortable'
                 ),
                 cls='flex flex-col justify-between flex-1 mt-6'
             ),

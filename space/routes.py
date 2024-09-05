@@ -50,8 +50,14 @@ def delete_space(space_id: int):
     Space.delete().where(Space.id == space_id).execute()
 
 
+@app.patch('/space/sort')
+def sort_tasklists(spaces: list[int]):
+    for index, space_id in enumerate(spaces):
+        Space.update(order=index).where(Space.id == space_id).execute()
+
+
 @app.patch('/space/{space_id}/sort')
-def sort_tasklists(space_id: int, tasklist: list[int]):
-    for index, tasklist_id in enumerate(tasklist):
+def sort_tasklists(space_id: int, tasklists: list[int]):
+    for index, tasklist_id in enumerate(tasklists):
         SpaceTaskList.update(order=index).where(SpaceTaskList.space == space_id,
                                                 SpaceTaskList.tasklist == tasklist_id).execute()

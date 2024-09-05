@@ -25,21 +25,9 @@ def get_space_by_id(space_id: int):
         .where(Space.id == space_id)
     )
 
-    ordered_space_tasklists_query = (
-        SpaceTaskList
-        .select()
-        .where(SpaceTaskList.space == space_id)
-        .order_by(SpaceTaskList.order)
-    )
+    space_with_prefetched_data = prefetch(space_query, SpaceTaskList, TaskList, TaskListTask, Task)[0]
 
-    ordered_tasklist_tasks_query = (
-        TaskListTask
-        .select()
-        .where(TaskListTask.tasklist << ordered_space_tasklists_query)
-        .order_by(TaskListTask.order)
-    )
-
-    return prefetch(space_query, ordered_space_tasklists_query, TaskList, ordered_tasklist_tasks_query, Task)[0]
+    return space_with_prefetched_data
 
 
 def db_migrate(table: str, field_name: str, field: object) -> None:  # example below
