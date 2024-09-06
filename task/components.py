@@ -4,10 +4,18 @@ from task.schemas import TaskSchema
 
 
 def TaskCheckbox(task: TaskSchema):
-    return (
-
-
-    )
+    return Input(
+        id=f'task-checkbox-{task.id}',
+        type='checkbox',
+        name='task-check',
+        label='Done',
+        checked=task.checked,
+        hx_put='/task/checkbox',
+        hx_trigger='change',
+        # hx_target=f'#task-{task.id}',
+        hx_vals=f'{{"task_id": "{task}"}}',
+        cls='checkbox w-4 h-4'
+    ),
 
 
 def TaskDelete(task: TaskSchema):
@@ -42,18 +50,7 @@ def TaskCard(task: TaskSchema):
                 value=task.id,
                 type='hidden'
             ),
-            Input(
-                id=f'task-checkbox-{task.id}',
-                type='checkbox',
-                name='task-check',
-                label='Done',
-                checked=task.checked,
-                hx_put='/task/checkbox',
-                hx_trigger='change',
-                hx_target=f'#task-{task.id}',
-                hx_vals=f'{{"task_id": "{task}"}}',
-                cls='checkbox w-4 h-4'
-            ),
+            TaskCheckbox(task),
             Input(
                 value=task.title,
                 type='text',
