@@ -47,7 +47,7 @@ def get_archive(session):
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
-                cls='flex flex-wrap gap-6 sortable'
+                cls='flex flex-wrap gap-6'
             ),
             id="space",
             cls='ml-64 py-10 pl-6'
