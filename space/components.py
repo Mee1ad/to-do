@@ -29,17 +29,18 @@ def SpaceCard(space: SpaceSchema):
                 }
             })
     """
+    space_id = getattr(space, 'id', None)
     return (
         Div(
             Div(
                 *tasklists_view,
                 Div(
-                    NewTasklistTitle(space.id) if space else None,
+                    NewTasklistTitle(space_id) if space else None,
                     id='new_tasklist_title_component',
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                hx_patch=f'/space/{space.id}/sort',
+                hx_patch=f'/space/{space_id}/sort',
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
