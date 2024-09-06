@@ -143,7 +143,18 @@ def SpaceTitle(space: SpaceSchema):
             type='hidden'
         ),
         P(
-            Span(space.title, cls='mx-2 text-sm font-medium'),
+            Input(
+                value=space.title,
+                type='text',
+                name='space_title',
+                autocomplete='off',
+                hx_put=f'/space/{space.id}/title',
+                hx_trigger='change',
+                hx_target=f'#space-title-{space.id}',
+                # hx_swap='outerHTML transition:true',
+                id=f'task-title-{space.id}',
+                cls='flex mx-2 text-sm font-medium justify-between px-2 focus:outline-none',
+            ),
             hx_get=f'/space/{space.id}',
             # hx_replace_url=f'/space/{space.id}/{space.title}',
             hx_trigger=f'click',
