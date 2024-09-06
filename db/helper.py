@@ -25,8 +25,9 @@ def get_space_by_id(space_id: int):
         .where(Space.id == space_id)
     )
 
-    space_with_prefetched_data = prefetch(space_query, SpaceTaskList, TaskList, TaskListTask, Task)[0]
-
+    space_with_prefetched_data = prefetch(space_query, SpaceTaskList, TaskList, TaskListTask, Task)
+    if space_with_prefetched_data:
+        return space_with_prefetched_data[0]
     return space_with_prefetched_data
 
 
