@@ -149,7 +149,7 @@ def SpaceTitle(space: SpaceSchema):
             Span(
                 space.title,
                 id=f'space-title-text-{space.id}',
-                cls='text-lg font-medium mx-2'
+                cls='text-md font-medium'
             ),
             # Input(
             #     value=space.title,
@@ -205,7 +205,7 @@ def SpaceTitle(space: SpaceSchema):
 def ArchiveTitle():
     return Div(
         P(
-            Span('Archive', cls='mx-2 text-sm font-medium'),
+            Span('Archive', cls='text-md font-medium'),
             hx_get=f'/archive',
             # hx_replace_url=f'/space/{space.id}/{space.title}',
             hx_trigger=f'click',
@@ -237,7 +237,15 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
             Div(
                 Nav(
                     Div(
-                        P('Spaces', cls='font-bold'),
+                        Div(
+                            I(
+                                data_feather='menu',
+                                cls=''
+                            ),
+                            P('SPACES', cls='font-bold'),
+                            cls='flex gap-2'
+                        ),
+
                         login_button_component,
                         cls='flex justify-between items-center pt-2 pb-4'
                     ),
