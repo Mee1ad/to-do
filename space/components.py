@@ -40,7 +40,7 @@ def SpaceCard(space: SpaceSchema):
                 ),
 
                 id=f'space_{getattr(space, 'id', None)}',
-                hx_patch=f'/space/{space_id}/sort',
+                hx_patch=f'/space/sort/{space_id}',
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
@@ -146,18 +146,23 @@ def SpaceTitle(space: SpaceSchema):
             type='hidden'
         ),
         P(
-            Input(
-                value=space.title,
-                type='text',
-                name='space_title',
-                autocomplete='off',
-                hx_put=f'/space/{space.id}/title',
-                hx_trigger='change',
-                hx_target=f'#space-title-{space.id}',
-                # hx_swap='outerHTML transition:true',
-                id=f'task-title-{space.id}',
-                cls='flex mx-2 text-sm font-medium justify-between px-2 focus:outline-none',
+            Span(
+                space.title,
+                id=f'space-title-text-{space.id}',
+                cls='text-lg font-medium mx-2'
             ),
+            # Input(
+            #     value=space.title,
+            #     type='text',
+            #     name='space_title',
+            #     autocomplete='off',
+            #     hx_put=f'/space/{space.id}/title',
+            #     hx_trigger='change',
+            #     hx_target=f'#space-title-{space.id}',
+            #     # hx_swap='outerHTML transition:true',
+            #     id=f'task-title-{space.id}',
+            #     cls='flex w-16  text-sm font-medium justify-between px-2 focus:outline-none bg-transparent',
+            # ),
             hx_get=f'/space/{space.id}',
             # hx_replace_url=f'/space/{space.id}/{space.title}',
             hx_trigger=f'click',

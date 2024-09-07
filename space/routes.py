@@ -1,6 +1,7 @@
 import uuid
 
-from fasthtml.common import JSONResponse, Div
+from fasthtml.common import JSONResponse, Div, Input, Script, Form
+from pip._internal.network import session
 from pydantic import ValidationError
 
 from app_init import app
@@ -56,6 +57,36 @@ def get_archive(session):
     )
 
 
+@app.get('/space_title_input/{space_id}')
+def get_title_input(session, space_id: int):
+    user = get_user_from_session(session)
+    space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
+    return Form(
+        Input(
+            value=space.title,
+            type='text',
+            name='space_title',
+            autocomplete='off',
+            cls='flex text-lg justify-between py-2 pl-5 bg-secondary focus:outline-none rounded-lg w-full',
+        ),
+        hx_put=f'/space/title/{space.id}',
+        hx_trigger='submit',
+        hx_target=f'#space-title-text-{space.id}',
+        hx_swap='outerHTML transition:true',
+        hx_vals=f'{{"space_id": "{space.id}"}}',
+        id=f'space-title-text-{space.id}',
+    )
+
+
+@app.put('/space/title/{space_id}')
+def update_space_title(session, space_id: int, space_title: str):
+    user = get_user_from_session(session)
+    space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
+    space.title = space_title
+    space.save()
+    return SpaceTitle(space), Script('feather.replace();')
+
+
 @app.post('/space')
 def create_space(space_title: str, session):
     user: UserSchema = get_user_from_session(session)
@@ -81,7 +112,7 @@ def sort_tasklists(spaces: list[int]):
         Space.update(order=index).where(Space.id == space_id).execute()
 
 
-@app.patch('/space/{space_id}/sort')
+@app.patch('/space/sort/{space_id}')
 def sort_tasklists(space_id: int, tasklists: list[int]):
     for index, tasklist_id in enumerate(tasklists):
         SpaceTaskList.update(order=index).where(SpaceTaskList.space == space_id,

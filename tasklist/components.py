@@ -1,4 +1,4 @@
-from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, Form, I, Button
+from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, Form, I, Button, Script
 
 from constants import ENTER_KEY_CODE
 from task.components import TaskCard, TaskInput
@@ -51,7 +51,7 @@ def TasklistTitle(tasklist: TaskListSchema, **kwargs):
         hx_swap='outerHTML transition:true',
         hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
         hx_transition_in='fade-in-scale-up',
-        cls='inline text-primary font-bold focus:outline-none text-2xl w-80'
+        cls='inline text-primary font-bold focus:outline-none text-2xl w-72'
     ),
 
 

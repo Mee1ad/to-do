@@ -52,3 +52,12 @@ def sort_tasks(tasklist_id: int, tasks: list[int]):
     for index, task_id in enumerate(tasks):
         TaskListTask.update(order=index).where(TaskListTask.tasklist == tasklist_id,
                                                TaskListTask.task == task_id).execute()
+
+
+@app.patch('/tasklist/archive/{tasklist_id}')
+def make_archive(session, tasklist_id: int):
+    user = get_user_from_session(session)
+    updated = TaskList.update(archived=~TaskList.archived).where(TaskList.user_id == user,
+                                                                 TaskList.id == tasklist_id).execute()
+    if not updated:
+        print('not updated')
