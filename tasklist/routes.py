@@ -20,11 +20,15 @@ def create_tasklist(tasklist_title: str, space_id: int, session):
     tasklist = TaskList.create(title=tasklist_title.capitalize(), user_id=user.id)
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
-        TasklistCard(tasklist),
+        Div(
+            TasklistCard(tasklist),
+            cls='-ml-9'
+        ),
+
         Div(
             NewTasklistTitle(space_id),
             id='new_tasklist_title_component',
-            cls='w-1/5'
+            cls=''
         ),)
 
 

@@ -97,7 +97,7 @@ def TaskInput(tasklist_id: int):
                     data_feather='plus',
                     cls='text-secondary'),
                 type='submit',
-                cls='bg-primary px-3.5 rounded-md',
+                cls='bg-primary px-3 rounded-md',
             ),
             hx_post='/task',
             hx_trigger='submit',

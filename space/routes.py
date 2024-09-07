@@ -67,7 +67,7 @@ def get_title_input(session, space_id: int):
             type='text',
             name='space_title',
             autocomplete='off',
-            cls='flex text-lg justify-between py-2 pl-5 bg-secondary focus:outline-none rounded-lg w-full',
+            cls='flex text-md justify-between py-2 pl-3 bg-secondary focus:outline-none rounded-lg w-full',
         ),
         hx_put=f'/space/title/{space.id}',
         hx_trigger='submit',
@@ -82,7 +82,7 @@ def get_title_input(session, space_id: int):
 def update_space_title(session, space_id: int, space_title: str):
     user = get_user_from_session(session)
     space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
-    space.title = space_title
+    space.title = space_title.capitalize()
     space.save()
     return SpaceTitle(space), Script('feather.replace();')
 
@@ -97,7 +97,7 @@ def create_space(space_title: str, session):
     space = Space.create(title=space_title.capitalize(), user_id=user.id)
     return (
         SpaceTitle(space)
-    )
+    ), Script('feather.replace();')
 
 
 @app.delete('/space/{space_id}')

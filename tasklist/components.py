@@ -74,7 +74,7 @@ def NewTasklistTitle(space_id: int):
                     cls='text-secondary'
                 ),
                 type='submit',
-                cls='bg-primary px-3.5 rounded-md',
+                cls='bg-primary px-3 rounded-md',
             ),
             hx_post='/tasklist',
             hx_trigger='submit',
@@ -90,23 +90,6 @@ def NewTasklistTitle(space_id: int):
         ),
         cls='w-96'
     ), Script('feather.replace();')
-
-
-def tasklist_component_old(tasklist: TaskListSchema):
-    return (
-        Div(
-            NewTasklistTitle(tasklist),
-            Br(),
-            Ul(
-                *[TaskCard(task) for task in tasklist.tasks],
-                TaskInput(tasklist.id),
-                cls='text-2xl',
-                id='tasklist'
-            ),
-            id=f'tasklist_{tasklist.id}',
-            cls='text-2xl w-1/5'
-        )
-    )
 
 
 def TasklistCard(tasklist: TaskListSchema):
