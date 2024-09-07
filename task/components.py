@@ -67,12 +67,13 @@ def TaskCard(task: TaskSchema):
             cls='flex items-center'
         ),
         I(
+            data_feather='trash',
             hx_delete=f'/task/{task.id}',
             hx_trigger=f'click',
             hx_target=f'#task-{task.id}',
             hx_swap='delete transition:true',
             hx_transition_in='fade-in-scale-up',
-            cls='fa-solid fa-trash p-2 hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100'
+            cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100'
                 ' transition-all cursor-pointer'
         ),
         id=f'task-{task.id}',
@@ -92,7 +93,9 @@ def TaskInput(tasklist_id: int):
                       ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
                       ' sm:text-sm sm:leading-6'),
             Button(
-                I(cls='fa-plus fa-regular text-secondary'),
+                I(
+                    data_feather='plus',
+                    cls='text-secondary'),
                 type='submit',
                 cls='bg-primary px-3.5 rounded-md',
             ),

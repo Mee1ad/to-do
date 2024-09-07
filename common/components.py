@@ -17,7 +17,10 @@ def InputText(**kwargs):
 def PlusButton(**kwargs):
     return (
         Button(
-            I(cls='fa-regular fa-plus text-gray-100'),
+            I(
+                data_feather='trash',
+                cls='text-gray-100'
+            ),
             type='submit',
             **kwargs,
             cls='inline-flex items-center justify-center whitespace-nowrap'

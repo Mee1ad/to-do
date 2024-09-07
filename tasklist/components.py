@@ -69,7 +69,10 @@ def NewTasklistTitle(space_id: int):
                     ' sm:text-sm sm:leading-6 w-full'
             ),
             Button(
-                I(cls='fa-plus fa-regular text-secondary'),
+                I(
+                    data_feather='plus',
+                    cls='text-secondary'
+                ),
                 type='submit',
                 cls='bg-primary px-3.5 rounded-md',
             ),
@@ -86,7 +89,7 @@ def NewTasklistTitle(space_id: int):
                 'hx-on:htmx:before-request': "this.parentElement.classList.add('opacity-0'); setTimeout(() => this.parentElement.remove(), 10)"}
         ),
         cls='w-96'
-    )
+    ), Script('feather.replace();')
 
 
 def tasklist_component_old(tasklist: TaskListSchema):
@@ -116,14 +119,28 @@ def TasklistCard(tasklist: TaskListSchema):
         Legend('tasklist', cls='sr-only'),
         Div(
             TasklistTitle(tasklist),
-            I(
-                hx_delete=f'/tasklist/{tasklist.id}',
-                hx_trigger=f'click',
-                hx_target=f'#tasklist_card_{tasklist.id}',
-                hx_swap='delete transition:true',
-                hx_transition_in='fade-in-scale-up',
-                cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md cursor-pointer'
+            Div(
+                I(
+                    data_feather='archive',
+                    hx_patch=f'/tasklist/archive/{tasklist.id}',
+                    hx_trigger=f'click',
+                    hx_target=f'#tasklist_card_{tasklist.id}',
+                    hx_swap='delete transition:true',
+                    hx_transition_in='fade-in-scale-up',
+                    cls='cursor-pointer'
+                ),
+                I(
+                    data_feather='trash',
+                    hx_delete=f'/tasklist/{tasklist.id}',
+                    hx_trigger=f'click',
+                    hx_target=f'#tasklist_card_{tasklist.id}',
+                    hx_swap='delete transition:true',
+                    hx_transition_in='fade-in-scale-up',
+                    cls='cursor-pointer'
+                ),
+                cls='flex gap-2'
             ),
+
             cls='flex items-center justify-between mb-8'
         ),
 
@@ -139,4 +156,4 @@ def TasklistCard(tasklist: TaskListSchema):
         TaskInput(tasklist.id),
         id=f'tasklist_card_{tasklist.id}',
         cls='flex flex-col gap-2 shadow-md p-4 rounded-lg'
-    )
+    ), Script('feather.replace();')

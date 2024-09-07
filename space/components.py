@@ -122,7 +122,9 @@ def SpaceInput():
                       ' ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset'
                       ' sm:text-sm sm:leading-6'),
             Button(
-                I(cls='fa-plus fa-regular text-secondary'),
+                I(
+                    data_feather='plus',
+                    cls='text-secondary'),
                 cls='bg-primary px-3.5 rounded-md',
             ),
             hx_post='/space',
@@ -166,15 +168,30 @@ def SpaceTitle(space: SpaceSchema):
                 '  dark:text-gray-200 '
                 ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
         ),
-        I(
-            hx_delete=f'/space/{space.id}',
-            hx_trigger=f'click',
-            hx_target=f'#space-title-{space.id}',
-            hx_swap='delete transition:true',
-            hx_transition_in='fade-in-scale-up',
-            cls='fa-solid fa-trash p-2 mr-2 hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100 '
-                'transition-all cursor-pointer'
+        Div(
+            I(
+                data_feather='edit',
+                hx_get=f'/space_title_input/{space.id}',
+                hx_trigger=f'click',
+                hx_target=f'#space-title-{space.id}',
+                hx_swap='outerHTML transition:true',
+                hx_transition_in='fade-in-scale-up',
+                cls='h-5 rounded-md opacity-0 group-hover:opacity-100 '
+                    'transition-all cursor-pointer'
+            ),
+            I(
+                data_feather='trash',
+                hx_delete=f'/space/{space.id}',
+                hx_trigger=f'click',
+                hx_target=f'#space-title-{space.id}',
+                hx_swap='delete transition:true',
+                hx_transition_in='fade-in-scale-up',
+                cls='h-5 mr-2 rounded-md opacity-0 group-hover:opacity-100 '
+                    'transition-all cursor-pointer'
+            ),
+            cls='flex gap-2'
         ),
+
         id=f'space-title-{space.id}',
         cls='flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'
     )

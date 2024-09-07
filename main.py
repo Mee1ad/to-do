@@ -1,4 +1,5 @@
 from fasthtml import serve
+from fasthtml.common import Script
 
 from space.routes import *
 # noinspection PyUnresolvedReferences
@@ -24,7 +25,7 @@ def home_page(session):
             cls='flex',
         )
 
-    )
+    ), Script('feather.replace();')
 
 
 serve()
