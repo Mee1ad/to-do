@@ -5,11 +5,7 @@ tailwind.config = {
     ],
     theme: {
         extend: {
-            // fontFamily: {
-                // sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-                // heading: ['var(--font-heading)', ...fontFamily.sans],
-                // body: ['var(--font-body)', ...fontFamily.sans]
-            // },
+            // Your custom theme configurations...
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
@@ -64,5 +60,6 @@ tailwind.config = {
             },
         },
     },
+    darkMode: 'class', // or 'media' or false to disable it completely
     // plugins: [require('@tailwindcss/forms'),],
 };
