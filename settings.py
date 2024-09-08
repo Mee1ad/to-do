@@ -16,6 +16,7 @@ class Env(BaseSettings):
 
     class Config:
         env_file = '.env'
+        extra = "ignore"
 
 
 env = Env()
