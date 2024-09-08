@@ -23,14 +23,15 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             if [ ! -d /var/www/todo ]; then
               sudo mkdir -p /var/www/todo
+              sudo chown -R $USER:$USER /var/www/todo  # Change ownership to current user
               cd /var/www/todo
-              git clone https://github.com/Mee1ad/to-do.git .
+              sudo git clone https://github.com/Mee1ad/to-do.git .
             else
               cd /var/www/todo
               if [ -d .git ]; then
-                git pull origin main
+                sudo git pull origin main
               else
-                git clone https://github.com/Mee1ad/to-do.git .
+                sudo git clone https://github.com/Mee1ad/to-do.git .
               fi
             fi
             if [ -f docker-compose.yml ]; then
