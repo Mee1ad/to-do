@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to Hetzner
 
 on:
   push:
@@ -13,25 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          python-version: '3.x'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install dependencies
+      - name: Deploy to Hetzner
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-#      - name: Run tests
-#        run: |
-#          pytest
-
-      # Deploy (example for Heroku, you can change for your platform)
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "your-heroku-app-name"
-          heroku_email: "your-heroku-email"
-
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /path/to/your/project
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
+          EOF
