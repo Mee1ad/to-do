@@ -21,8 +21,23 @@ jobs:
       - name: Deploy to Hetzner
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /var/www/todo/
-            git pull origin main
-            sudo docker-compose down
-            sudo docker-compose up -d --build
+            if [ ! -d /var/www/todo ]; then
+              mkdir -p /var/www/todo
+              cd /var/www/todo
+              git clone https://github.com/Mee1ad/to-do.git .
+            else
+              cd /var/www/todo
+              if [ -d .git ]; then
+                git pull origin main
+              else
+                git clone https://github.com/Mee1ad/to-do.git .
+              fi
+            fi
+            if [ -f docker-compose.yml ]; then
+              sudo docker-compose down
+              sudo docker-compose up -d --build
+            else
+              echo "Error: docker-compose.yml not found!"
+              exit 1
+            fi
           EOF
