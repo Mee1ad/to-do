@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to Hetzner
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /path/to/your/project
+            cd /app
             git pull origin main
             docker-compose down
             docker-compose up -d --build
