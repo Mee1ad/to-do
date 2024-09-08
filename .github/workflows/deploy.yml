@@ -22,7 +22,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             if [ ! -d /var/www/todo ]; then
-              mkdir -p /var/www/todo
+              sudo mkdir -p /var/www/todo
               cd /var/www/todo
               git clone https://github.com/Mee1ad/to-do.git .
             else
