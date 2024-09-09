@@ -3,7 +3,7 @@ upda# Developer guid for Prod
 ### Create github user for using github actions with non-root
 
 #### - Using Hetzner cloud config
-
+After your server is created, monitor the graph and wait for the CPU usage to drop to 0. Once it stabilizes, you can start an SSH session to access your server.
 ```shell
 #cloud-config
 users:
@@ -20,6 +20,8 @@ packages:
 package_update: true
 package_upgrade: true
 runcmd:
+  - mkdir -p /var/www/todo
+  - chown -R github:github /var/www/todo
   - printf "[sshd]\nenabled = true\nbanaction = iptables-multiport" > /etc/fail2ban/jail.local
   - systemctl enable fail2ban
   - ufw allow OpenSSH
