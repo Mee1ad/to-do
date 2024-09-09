@@ -35,7 +35,7 @@ jobs:
               fi
             fi
             if [ -f docker-compose.yml ]; then
-              sudo docker compose restart web --do-deps
+              sudo docker compose restart web
             else
               echo "Error: docker-compose.yml not found!"
               exit 1
