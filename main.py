@@ -1,6 +1,7 @@
 from fasthtml import serve
-from fasthtml.common import Script
 
+# noinspection PyUnresolvedReferences
+from auth.routes import *
 from space.routes import *
 # noinspection PyUnresolvedReferences
 from task.routes import *
