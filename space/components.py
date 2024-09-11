@@ -223,7 +223,7 @@ def ArchiveTitle():
 
 def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
     login_button_component = A(
-        'Login2',
+        'Login',
         href=get_login_url(),
         cls='relative flex gap-2 hover:bg-secondary py-1 px-2 rounded-md cursor-pointer',
     ),
