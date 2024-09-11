@@ -17,17 +17,20 @@ class Env(BaseSettings):
 
 
 env = Env()
-
-if env.stage.lower() == 'local':
-    DB = SqliteDatabase('./db/to-do.sqlite3', pragmas={'foreign_keys': 1})
-elif env.stage.lower() == 'prod':
-    db = PostgresqlDatabase(
+print(env.stage.lower())
+if env.stage.lower() == 'prod':
+    DB = PostgresqlDatabase(
         env.postgres_db,
         user=env.postgres_user,
         password=env.postgres_password,
         host='db',
         port=5432
     )
+
+else:
+    DB = SqliteDatabase('./db/to-do.sqlite3', pragmas={'foreign_keys': 1})
+
+print(DB)
 
 
 class BaseModel(Model):
