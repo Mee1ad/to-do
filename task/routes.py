@@ -1,4 +1,4 @@
-from fasthtml.common import JSONResponse, Div
+from fasthtml.common import JSONResponse, Div, Script
 from pydantic import ValidationError
 
 from app_init import app
@@ -17,7 +17,7 @@ def create_task(task_text: str, tasklist_id: int):
     task = Task.create(title=task_text.capitalize())
     tasklist_task = TaskListTask.create(tasklist_id=tasklist_id, task_id=task.id)
     return (
-        TaskCard(task),
+        TaskCard(task), Script('feather.replace();')
     )
 
 
