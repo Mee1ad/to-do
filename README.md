@@ -64,7 +64,7 @@ github ALL=(ALL) NOPASSWD:ALL
 ### Initiate DB
 
 ```shell
-docker exec -it web python
+docker exec -it python_app python
 ```
 
 ```python
