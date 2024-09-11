@@ -29,6 +29,7 @@ jobs:
             else
               cd /var/www/todo
               if [ -d .git ]; then
+                sudo git fetch origin && sudo git reset --hard origin/main
                 sudo git pull origin main
               else
                 sudo git clone https://github.com/Mee1ad/to-do.git .
