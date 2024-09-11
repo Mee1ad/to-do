@@ -3,6 +3,8 @@
 TIMESTAMP=$(date +%F_%T)
 BACKUP_FILE="/backup/db_backup_${TIMESTAMP}.sql"
 
+export POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+
 pg_dump -h db -U "$POSTGRES_USER" -d "$POSTGRES_DB" -F c > "$BACKUP_FILE"
 
 if [ $? -eq 0 ]; then
