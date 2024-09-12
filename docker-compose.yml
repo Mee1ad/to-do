@@ -20,12 +20,16 @@ services:
     image: postgres:16
     container_name: postgres_db
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_LISTEN_ADDRESSES: 0.0.0.0
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./db/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     env_file:
       - .env
 
@@ -48,7 +52,7 @@ services:
     restart: always
     environment:
       NGINX_PROXY_CONTAINER: nginx_proxy
-#      ACME_CA_URI: https://acme-staging-v02.api.letsencrypt.org/directory
+    #      ACME_CA_URI: https://acme-staging-v02.api.letsencrypt.org/directory
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs:/etc/nginx/certs
@@ -67,7 +71,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./backup:/backup
     entrypoint: |
-       bash -c 'chmod +x /backup/backup.sh && while true; do /backup/backup.sh; sleep 3600; done'
+      bash -c 'chmod +x /backup/backup.sh && while true; do /backup/backup.sh; sleep 3600; done'
 
 volumes:
   postgres_data:
