@@ -33,6 +33,14 @@ services:
     env_file:
       - .env
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx_proxy
