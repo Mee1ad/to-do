@@ -29,7 +29,7 @@ class RedisSessionMiddleware:
         async def send_wrapper(message):
             if message['type'] == 'http.response.start':
                 if scope['session']:
-                    await self.redis_client.hmset(session_id, scope['session'])
+                    await self.redis_client.hset(session_id, mapping=scope['session'])
             await send(message)
 
         await self.app(scope, receive, send_wrapper)
