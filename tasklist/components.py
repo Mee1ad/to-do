@@ -1,4 +1,4 @@
-from fasthtml.common import Div, Span, Input, Br, Ul, Fieldset, Legend, Form, I, Button, Script
+from fasthtml.common import Div, Span, Input, Fieldset, Legend, Form, I, Button, Script
 
 from constants import ENTER_KEY_CODE
 from task.components import TaskCard, TaskInput
@@ -84,9 +84,9 @@ def NewTasklistTitle(space_id: int):
             hx_transition_in='fade-in-scale-up',
             id=new_tasklist_title_id,
             cls='relative flex gap-2',
-            # **{'hx-on:htmx:after-request': "javascript:void(0);"}
             **{
-                'hx-on:htmx:before-request': "this.parentElement.classList.add('opacity-0'); setTimeout(() => this.parentElement.remove(), 10)"}
+                'hx-on:htmx:before-request': "document.getElementById('new_tasklist_title_component').classList.add('opacity-0'); setTimeout(() => document.getElementById('new_tasklist_title_component').remove(), 10)"
+            }
         ),
         cls='w-96'
     ), Script('feather.replace();')

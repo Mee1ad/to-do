@@ -17,3 +17,9 @@ def callback(code: str, session):
     clear_session(session)
     session['user_id'] = user.id
     return RedirectResponse("/")
+
+
+@app.get('/auth/logout')
+def logout(session):
+    session.clear()
+    return RedirectResponse("/")
