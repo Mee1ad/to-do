@@ -9,7 +9,6 @@ class RedisSessionMiddleware:
         self.redis_client = redis.from_url("redis://redis:6379/0")
 
     async def __call__(self, scope, receive, send):
-        # Initialize session_id variable
         session_id = None
 
         # Extract session ID from cookies
