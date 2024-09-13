@@ -17,6 +17,7 @@ stage = env.stage.lower()
 @app.get('/')
 async def home_page(session):
     print(session)
+    print(session)
     user: UserSchema = get_user_from_session(session)
     if not user:
         user: UserSchema = User.create(name='Guest')
