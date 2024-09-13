@@ -23,5 +23,5 @@ app, rt = fast_app(
     hdrs=(tailwind, tailwind_settings, global_css, font_inter, css, feather_icons, sortable),
     debug=debug, live=live, reload_interval=1, pico=False)
 
-# if env.stage.lower() == 'prod':
-#     app.add_middleware(RedisSessionMiddleware)
+if env.stage.lower() == 'prod':
+    app.add_middleware(RedisSessionMiddleware)
