@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from fasthtml import serve
 
 # noinspection PyUnresolvedReferences
@@ -13,7 +15,8 @@ stage = env.stage.lower()
 
 
 @app.get('/')
-def home_page(scope, session):
+async def home_page(scope: Dict[str, Any], session):
+    print(scope)
     if stage == 'prod':
         session = scope.get('session', {})
     user: UserSchema = get_user_from_session(session)
