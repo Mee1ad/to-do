@@ -151,27 +151,9 @@ def SpaceTitle(space: SpaceSchema):
                 id=f'space-title-text-{space.id}',
                 cls='text-md font-medium'
             ),
-            # Input(
-            #     value=space.title,
-            #     type='text',
-            #     name='space_title',
-            #     autocomplete='off',
-            #     hx_put=f'/space/{space.id}/title',
-            #     hx_trigger='change',
-            #     hx_target=f'#space-title-{space.id}',
-            #     # hx_swap='outerHTML transition:true',
-            #     id=f'task-title-{space.id}',
-            #     cls='flex w-16  text-sm font-medium justify-between px-2 focus:outline-none bg-transparent',
-            # ),
-            hx_get=f'/space/{space.id}',
-            # hx_replace_url=f'/space/{space.id}/{space.title}',
-            hx_trigger=f'click',
-            hx_target='#space',
-            hx_swap='outerHTML transition:true',
-            hx_transition_in='fade-in-scale-up',
             cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
                 '  dark:text-gray-200 '
-                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
+                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-default'
         ),
         Div(
             I(
@@ -196,7 +178,17 @@ def SpaceTitle(space: SpaceSchema):
             ),
             cls='flex gap-2'
         ),
-
+        hx_get=f'/space/{space.id}',
+        # hx_replace_url=f'/space/{space.id}/{space.title}',
+        hx_trigger=f'click',
+        hx_target='#space',
+        hx_swap='outerHTML transition:true',
+        hx_transition_in='fade-in-scale-up',
+        **{"hx-on:htmx:before-request": "document.querySelectorAll('[name=space-title]')."
+                                        "forEach(el => el.classList.remove('bg-gray-100'));"
+                                        "this.classList.add('bg-gray-100');",
+           },
+        name='space-title',
         id=f'space-title-{space.id}',
         cls='flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'
     )
@@ -214,7 +206,7 @@ def ArchiveTitle():
             hx_transition_in='fade-in-scale-up',
             cls='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform'
                 '  dark:text-gray-200 '
-                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer'
+                ' dark:hover:text-gray-200 hover:text-gray-700 cursor-default'
         ),
         id=f'archive_menu',
         cls='flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'
