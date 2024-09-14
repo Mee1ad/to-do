@@ -2,7 +2,9 @@ from fasthtml import Script
 from fasthtml.common import fast_app, Link, Style
 
 from middleware.session import RedisSessionMiddleware
-from settings import env
+from settings import env, REDIS
+from starsessions import SessionMiddleware
+from starsessions.stores.redis import RedisStore
 
 tailwind = Script(src="https://cdn.tailwindcss.com")
 feather_icons = Script(src='https://unpkg.com/feather-icons')
@@ -24,4 +26,5 @@ app, rt = fast_app(
     debug=debug, live=live, reload_interval=1, pico=False)
 
 if env.stage.lower() == 'prod':
-    app.add_middleware(RedisSessionMiddleware)
+    session_store = RedisStore(connection=REDIS)
+    app.add_middleware(SessionMiddleware, store=session_store, lifetime=3600)
