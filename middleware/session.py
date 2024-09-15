@@ -76,7 +76,7 @@ class RedisSessionMiddleware(MiddlewareBase):
                 cookie_session_id = cookies.get('session_id', None)
                 if not cookie_session_id:
                     headers = MutableHeaders(scope=message)
-                    header_value = build_set_cookie_header(session_id, cookies)
+                    header_value = build_set_cookie_header(session_id)
                     headers.append("Set-Cookie", header_value)
             await send(message)
 
