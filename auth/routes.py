@@ -6,7 +6,7 @@ from auth.models import User, Login
 
 
 @app.get('/auth/callback')
-def callback(code: str, session):
+def callback(req, code: str):
     profile_and_token = workos_client.sso.get_profile_and_token(code)
     profile = profile_and_token.profile
     user, created = User.get_or_create(name=profile.first_name, email=profile.email)
@@ -14,8 +14,10 @@ def callback(code: str, session):
                         connection_id=profile.connection_id, idp_id=profile.idp_id,
                         defaults={'user': user.id, 'provider': profile.connection_type,
                                   'connection_id': profile.connection_id, 'idp_id': profile.idp_id})
-    clear_session(session)
-    session['user_id'] = user.id
+    req.scope['redis_session'] = {
+        'session_id': req.scope['redis_session']['session_id'],
+        'user_id': user.id
+    }
     return RedirectResponse("/")
 
 

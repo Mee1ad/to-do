@@ -1,4 +1,4 @@
-import redis
+import redis.asyncio as redis
 from peewee import SqliteDatabase, PostgresqlDatabase, Model
 from pydantic_settings import BaseSettings
 
@@ -18,7 +18,7 @@ class Env(BaseSettings):
 
 
 env = Env()
-REDIS = None
+
 if env.stage.lower() == 'prod':
     DB = PostgresqlDatabase(
         env.postgres_db,
@@ -29,10 +29,10 @@ if env.stage.lower() == 'prod':
     )
     REDIS = redis.from_url("redis://redis:6379/0")
 
+
 else:
     DB = SqliteDatabase('./db/to-do.sqlite3', pragmas={'foreign_keys': 1})
-
-print(DB)
+    REDIS = redis.from_url("redis://localhost:6379/0")
 
 
 class BaseModel(Model):
