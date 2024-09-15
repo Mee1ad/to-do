@@ -12,7 +12,7 @@ from settings import REDIS, env
 from peewee import DoesNotExist
 
 
-def build_set_cookie_header(session_id, cookies):
+def build_set_cookie_header(session_id):
     header_value = (
         f"session_id={session_id}; path=/; Max-Age={RedisSessionMiddleware.TWO_WEEKS_IN_SECONDS}; "
         "HttpOnly; SameSite=Lax"

@@ -2,7 +2,6 @@ from fasthtml.common import JSONResponse, Div
 from pydantic import ValidationError
 
 from app_init import app
-from auth.helper import get_user_from_session
 from auth.schemas import UserSchema
 from space.models import SpaceTaskList
 from tasklist.components import TasklistCard, NewTasklistTitle, TasklistTitle
@@ -54,8 +53,8 @@ def sort_tasks(tasklist_id: int, tasks: list[int]):
 
 
 @app.patch('/tasklist/archive/{tasklist_id}')
-def make_archive(session, tasklist_id: int):
-    user = get_user_from_session(session)
+def make_archive(req, tasklist_id: int):
+    user = req.scope['user']
     updated = TaskList.update(archived=~TaskList.archived).where(TaskList.user_id == user,
                                                                  TaskList.id == tasklist_id).execute()
     if not updated:

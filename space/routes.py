@@ -1,19 +1,16 @@
 import uuid
 
 from fasthtml.common import JSONResponse, Div, Input, Script, Form
-from pip._internal.network import session
 from pydantic import ValidationError
 
 from app_init import app
-from auth.helper import get_user_from_session
-from auth.models import User, Login
 from auth.schemas import UserSchema
 from db.helper import get_space_by_id
 from space.components import SpaceCard, SpacesList, SpaceTitle
 from space.models import Space, SpaceTaskList
 from space.schemas import SpaceCreateSchema
 from tasklist.models import TaskList
-from tasklist.components import TasklistCard, NewTasklistTitle
+from tasklist.components import TasklistCard
 
 
 @app.get('/space/{space_id}')
@@ -31,8 +28,8 @@ def get_public_space(req, space_id: int, space_title: str):
 
 
 @app.get('/archive')
-def get_archive(session):
-    user = get_user_from_session(session)
+def get_archive(req):
+    user = req.scope['user']
     tasklists = TaskList.select().where(TaskList.user_id == user.id, TaskList.archived == True).execute()
     tasklists_view = [TasklistCard(tasklist) for tasklist in tasklists]
     return (
@@ -54,8 +51,8 @@ def get_archive(session):
 
 
 @app.get('/space_title_input/{space_id}')
-def get_title_input(session, space_id: int):
-    user = get_user_from_session(session)
+def get_title_input(req, space_id: int):
+    user = req.scope['user']
     space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
     return Form(
         Input(
@@ -75,8 +72,8 @@ def get_title_input(session, space_id: int):
 
 
 @app.put('/space/title/{space_id}')
-def update_space_title(session, space_id: int, space_title: str):
-    user = get_user_from_session(session)
+def update_space_title(req, space_id: int, space_title: str):
+    user = req.scope['user']
     space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
     space.title = space_title.capitalize()
     space.save()

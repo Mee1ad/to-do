@@ -1,7 +1,7 @@
 from fasthtml.common import RedirectResponse
 
 from app_init import app
-from auth.helper import workos_client, clear_session
+from auth.helper import workos_client
 from auth.models import User, Login
 
 
