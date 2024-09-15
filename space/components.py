@@ -59,7 +59,7 @@ def spaces_list_component_old(spaces: list[SpaceSchema]):
     return Aside(
         Nav(
             H3(
-                'Spaces',
+                'Spaces2',
                 hx_get='/',
                 hx_replace_url='/',
                 hx_trigger='click',
