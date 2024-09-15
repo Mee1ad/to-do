@@ -234,7 +234,7 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
                                 data_feather='menu',
                                 cls=''
                             ),
-                            P('SPACES2', cls='font-bold'),
+                            P('SPACES', cls='font-bold'),
                             cls='flex gap-2'
                         ),
 
