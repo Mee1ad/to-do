@@ -59,7 +59,7 @@ def spaces_list_component_old(spaces: list[SpaceSchema]):
     return Aside(
         Nav(
             H3(
-                'Spaces2',
+                'Spaces',
                 hx_get='/',
                 hx_replace_url='/',
                 hx_trigger='click',
@@ -234,7 +234,7 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
                                 data_feather='menu',
                                 cls=''
                             ),
-                            P('SPACES', cls='font-bold'),
+                            P('SPACES2', cls='font-bold'),
                             cls='flex gap-2'
                         ),
 
