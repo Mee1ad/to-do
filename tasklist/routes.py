@@ -11,8 +11,8 @@ from tasklist.schemas import TaskListCreateSchema, TaskListUpdateSchema
 
 
 @app.post('/tasklist')
-def create_tasklist(tasklist_title: str, space_id: int, session):
-    user: UserSchema = get_user_from_session(session)
+def create_tasklist(req, tasklist_title: str, space_id: int):
+    user: UserSchema = req.scope['user']
     try:
         TaskListCreateSchema(tasklist_title=tasklist_title, space_id=space_id)
     except ValidationError as e:

@@ -23,12 +23,8 @@ def get_space(space_id: int):
 
 
 @app.get('/space/{space_id}/{space_title}')
-def get_public_space(space_id: int, space_title: str, session):
-    user: UserSchema = get_user_from_session(session)
-    if not user:
-        user: UserSchema = User.create(name='Guest')
-        Login.create(user_id=user.id, provider='session', connection_id=uuid.uuid4().hex)
-        session['user_id'] = user.id
+def get_public_space(req, space_id: int, space_title: str):
+    user: UserSchema = req.scope['user']
     spaces = Space.select().where(Space.user_id == user.id).execute()
     space = get_space_by_id(space_id)
     return SpacesList(spaces, user), SpaceCard(space)
@@ -88,8 +84,8 @@ def update_space_title(session, space_id: int, space_title: str):
 
 
 @app.post('/space')
-def create_space(space_title: str, session):
-    user: UserSchema = get_user_from_session(session)
+def create_space(req, space_title: str):
+    user: UserSchema = req.scope['user']
     try:
         SpaceCreateSchema(title=space_title)
     except ValidationError as e:
