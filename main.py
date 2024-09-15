@@ -23,7 +23,10 @@ def home_page(req):
     space = get_space_by_id(first_space_id)
     return Div(
         Div(
-            SpacesList(spaces, user),
+            Div(
+                SpacesList(spaces, user),
+                cls='hidden md:block'
+            ),
             SpaceCard(space),
             cls='flex',
         )
