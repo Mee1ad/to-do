@@ -44,12 +44,12 @@ def SpaceCard(space: SpaceSchema):
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
-                cls='flex flex-wrap gap-9 justify-center sortable'
+                cls='flex flex-wrap gap-9 justify-center md:justify-start sortable'
             ),
             hx_patch='/test3',
             hx_trigger='changed',
             id="space",
-            cls='md:ml-64 w-full flex justify-center py-10',
+            cls='md:ml-64 w-full flex justify-center md:justify-start md:pl-9 py-10',
         ),
 
     ), Script(js)
