@@ -138,7 +138,7 @@ def TasklistCard(tasklist: TaskListSchema):
             hx_trigger='end',
             hx_swap='none',
             hx_include="[name='tasks']",
-            cls='flex flex-col gap-2 md:sortable'
+            cls='flex flex-col gap-2 md:sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
         ),
         TaskInput(tasklist.id),
         id=f'tasklist_card_{tasklist.id}',
