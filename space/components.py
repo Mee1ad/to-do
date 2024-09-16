@@ -44,7 +44,7 @@ def SpaceCard(space: SpaceSchema):
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
-                cls='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 sortable'
+                cls='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 lg:sortable'
             ),
             hx_patch='/test3',
             hx_trigger='changed',
@@ -248,7 +248,7 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
                         hx_trigger='end',
                         hx_swap='none',
                         hx_include="[name='spaces']",
-                        cls='space-y-3 sortable'
+                        cls='space-y-3 lg:sortable'
                     ),
                     ArchiveTitle(),
                     cls='space-y-3'
