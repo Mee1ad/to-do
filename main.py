@@ -1,10 +1,7 @@
-from typing import Any, Dict
-
-from fasthtml import serve
+from fasthtml import serve, FileResponse
 
 # noinspection PyUnresolvedReferences
 from auth.routes import *
-from settings import REDIS
 from settings import env
 from space.routes import *
 # noinspection PyUnresolvedReferences
@@ -32,6 +29,12 @@ def home_page(req):
         )
 
     ), Script('feather.replace();')
+
+
+#  http://localhost:5002/static/svg/log.svg
+@app.get("/static/{name:path}.{ext:static}")
+def static(name: str, ext: str):
+    return FileResponse(f'static\\{name}.{ext}')
 
 
 serve()
