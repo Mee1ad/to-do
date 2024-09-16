@@ -104,6 +104,10 @@ def TasklistCard(tasklist: TaskListSchema):
             TasklistTitle(tasklist),
             Div(
                 I(
+                    data_feather='move',
+                    cls='cursor-pointer handle opacity-0 group-hover:opacity-100 transition-all'
+                ),
+                I(
                     data_feather='archive',
                     hx_patch=f'/tasklist/archive/{tasklist.id}',
                     hx_trigger=f'click',
@@ -134,9 +138,9 @@ def TasklistCard(tasklist: TaskListSchema):
             hx_trigger='end',
             hx_swap='none',
             hx_include="[name='tasks']",
-            cls='flex flex-col gap-2 lg:sortable'
+            cls='flex flex-col gap-2 md:sortable'
         ),
         TaskInput(tasklist.id),
         id=f'tasklist_card_{tasklist.id}',
-        cls='flex flex-col gap-2 shadow-md p-4 rounded-lg'
+        cls='flex flex-col gap-2 shadow-md p-4 rounded-lg group'
     ), Script('feather.replace();')
