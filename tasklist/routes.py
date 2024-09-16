@@ -16,7 +16,8 @@ def create_tasklist(req, tasklist_title: str, space_id: int):
         TaskListCreateSchema(tasklist_title=tasklist_title, space_id=space_id)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    tasklist = TaskList.create(title=tasklist_title.capitalize(), user_id=user.id)
+    title = tasklist_title.capitalize() if tasklist_title == tasklist_title.lower() else tasklist_title
+    tasklist = TaskList.create(title=title, user_id=user.id)
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     return (
         TasklistCard(tasklist),
@@ -32,7 +33,8 @@ def update_tasklist(tasklist_id: int, tasklist_title: str):
         TaskListUpdateSchema(id=tasklist_id, title=tasklist_title)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    updated = TaskList.update(title=tasklist_title.capitalize()).where(TaskList.id == tasklist_id).execute()
+    title = tasklist_title.capitalize() if tasklist_title == tasklist_title.lower() else tasklist_title
+    updated = TaskList.update(title=title).where(TaskList.id == tasklist_id).execute()
     tasklist = TaskList.get(id=tasklist_id)
     if updated:
         return TasklistTitle(tasklist)

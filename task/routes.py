@@ -14,7 +14,8 @@ def create_task(task_text: str, tasklist_id: int):
         TaskCreateSchema(task_text=task_text, tasklist_id=tasklist_id)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    task = Task.create(title=task_text.capitalize())
+    title = task_text.capitalize() if task_text == task_text.lower() else task_text
+    task = Task.create(title=title)
     tasklist_task = TaskListTask.create(tasklist_id=tasklist_id, task_id=task.id)
     return (
         TaskCard(task), Script('feather.replace();')

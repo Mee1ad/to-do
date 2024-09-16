@@ -75,7 +75,8 @@ def get_title_input(req, space_id: int):
 def update_space_title(req, space_id: int, space_title: str):
     user = req.scope['user']
     space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
-    space.title = space_title.capitalize()
+    title = space_title.capitalize() if space_title == space_title.lower() else space_title
+    space.title = title
     space.save()
     return SpaceTitle(space), Script('feather.replace();')
 
@@ -87,7 +88,8 @@ def create_space(req, space_title: str):
         SpaceCreateSchema(title=space_title)
     except ValidationError as e:
         return JSONResponse({"errors": e.errors()}, status_code=400)
-    space = Space.create(title=space_title.capitalize(), user_id=user.id)
+    title = space_title.capitalize() if space_title == space_title.lower() else space_title
+    space = Space.create(title=title, user_id=user.id)
     return (
         SpaceTitle(space)
     ), Script('feather.replace();')
