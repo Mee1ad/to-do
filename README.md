@@ -6,7 +6,7 @@ upda# Developer guid for Prod
 After your server is created, monitor the graph and wait for the CPU usage to drop to 0. Once it stabilizes, you can start an SSH session to access your server.
 ```shell
 #cloud-config
-users:
+users: 
   - name: github
     sudo: [ 'ALL=(ALL) NOPASSWD:ALL' ]
     shell: /bin/bash
@@ -38,6 +38,8 @@ runcmd:
   - sed -i -e '/^\(#\|\)AllowAgentForwarding/s/^.*$/AllowAgentForwarding no/' /etc/ssh/sshd_config
   - sed -i -e '/^\(#\|\)AuthorizedKeysFile/s/^.*$/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
   - sed -i '$a AllowUsers github' /etc/ssh/sshd_config
+  - echo "vm.overcommit_memory=1" | sudo tee -a /etc/sysctl.conf
+  - sysctl -p
   - reboot
 
 ```
