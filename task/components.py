@@ -62,7 +62,7 @@ def TaskCard(task: TaskSchema):
                 # hx_swap='outerHTML transition:true',
                 hx_vals=f'{{"task_id": "{task.id}"}}',
                 id=f'task-title-{task.id}',
-                cls='flex text-lg justify-between px-2 bg-secondary focus:outline-none',
+                cls='text-lg px-2 bg-secondary focus:outline-none',
             ),
             cls='flex items-center'
         ),
