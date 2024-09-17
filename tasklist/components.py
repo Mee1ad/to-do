@@ -95,7 +95,7 @@ def NewTasklistTitle(space_id: int):
 def TasklistCard(tasklist: TaskListSchema):
     styles = Style('''
         [data-group="group-tasklist"]:hover .group-tasklist-hover {
-            opacity: 100;
+            opacity: 0.3;
             transition: opacity 0.3s;
         }'''
                    )
@@ -144,7 +144,7 @@ def TasklistCard(tasklist: TaskListSchema):
             hx_trigger='end',
             hx_swap='none',
             hx_include="[name='tasks']",
-            cls='flex flex-col gap-2 md:sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
+            cls='flex flex-col gap-2 sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
         ),
 
         id=f'tasklist_card_{tasklist.id}',

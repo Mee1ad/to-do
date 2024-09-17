@@ -157,13 +157,18 @@ def SpaceTitle(space: SpaceSchema):
         ),
         Div(
             I(
+                data_feather='move',
+                cls='h-5 rounded-md opacity-0 group-hover:opacity-30'
+                    ' transition-all cursor-pointer handle'
+            ),
+            I(
                 data_feather='edit',
                 hx_get=f'/space_title_input/{space.id}',
                 hx_trigger=f'click',
                 hx_target=f'#space-title-{space.id}',
                 hx_swap='outerHTML transition:true',
                 hx_transition_in='fade-in-scale-up',
-                cls='h-5 rounded-md opacity-0 group-hover:opacity-100 '
+                cls='h-5 rounded-md opacity-0 group-hover:opacity-100 duration-300'
                     'transition-all cursor-pointer'
             ),
             I(
@@ -173,10 +178,10 @@ def SpaceTitle(space: SpaceSchema):
                 hx_target=f'#space-title-{space.id}',
                 hx_swap='delete transition:true',
                 hx_transition_in='fade-in-scale-up',
-                cls='h-5 mr-2 rounded-md opacity-0 group-hover:opacity-100 '
+                cls='h-5 mr-2 rounded-md opacity-0 group-hover:opacity-100 duration-300'
                     'transition-all cursor-pointer'
             ),
-            cls='flex gap-2'
+            cls='flex gap-1'
         ),
         hx_get=f'/space/{space.id}',
         # hx_replace_url=f'/space/{space.id}/{space.title}',
@@ -248,7 +253,7 @@ def SpacesList(spaces: list[SpaceSchema], user: UserSchema):
                         hx_trigger='end',
                         hx_swap='none',
                         hx_include="[name='spaces']",
-                        cls='space-y-3 md:sortable'
+                        cls='space-y-3 sortable'
                     ),
                     ArchiveTitle(),
                     cls='space-y-3'

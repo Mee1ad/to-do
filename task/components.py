@@ -66,18 +66,27 @@ def TaskCard(task: TaskSchema):
             ),
             cls='flex items-center'
         ),
-        I(
-            data_feather='trash',
-            hx_delete=f'/task/{task.id}',
-            hx_trigger=f'click',
-            hx_target=f'#task-{task.id}',
-            hx_swap='delete transition:true',
-            hx_transition_in='fade-in-scale-up',
-            cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300'
-                ' transition-all cursor-pointer'
+        Div(
+            I(
+                data_feather='move',
+                cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-30 transition-all duration-300'
+                    ' transition-all cursor-pointer handle'
+            ),
+            I(
+                data_feather='trash',
+                hx_delete=f'/task/{task.id}',
+                hx_trigger=f'click',
+                hx_target=f'#task-{task.id}',
+                hx_swap='delete transition:true',
+                hx_transition_in='fade-in-scale-up',
+                cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300'
+                    ' transition-all cursor-pointer'
+            ),
+            cls='flex gap-1'
         ),
+
         id=f'task-{task.id}',
-        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between cursor-grab group'
+        cls='flex items-center justify-between bg-secondary px-2 py-1 rounded-md cursor-grab group'
             ' transition-all duration-300'
     )
 
