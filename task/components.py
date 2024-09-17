@@ -62,7 +62,7 @@ def TaskCard(task: TaskSchema):
                 # hx_swap='outerHTML transition:true',
                 hx_vals=f'{{"task_id": "{task.id}"}}',
                 id=f'task-title-{task.id}',
-                cls='text-lg px-2 bg-secondary focus:outline-none',
+                cls='text-lg px-2 bg-secondary focus:outline-none group',
             ),
             cls='flex items-center'
         ),
@@ -73,11 +73,12 @@ def TaskCard(task: TaskSchema):
             hx_target=f'#task-{task.id}',
             hx_swap='delete transition:true',
             hx_transition_in='fade-in-scale-up',
-            cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100'
+            cls='hover:bg-secondary rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300'
                 ' transition-all cursor-pointer'
         ),
         id=f'task-{task.id}',
-        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between group cursor-grab'
+        cls='flex items-center bg-secondary px-2 py-1 rounded-md justify-between cursor-grab group'
+            ' transition-all duration-300'
     )
 
 

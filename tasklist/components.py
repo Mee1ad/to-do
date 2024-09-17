@@ -1,4 +1,4 @@
-from fasthtml.common import Div, Span, Input, Fieldset, Legend, Form, I, Button, Script
+from fasthtml.common import Div, Span, Input, Fieldset, Legend, Form, I, Button, Script, Style
 
 from constants import ENTER_KEY_CODE
 from task.components import TaskCard, TaskInput
@@ -93,6 +93,12 @@ def NewTasklistTitle(space_id: int):
 
 
 def TasklistCard(tasklist: TaskListSchema):
+    styles = Style('''
+        [data-group="group-tasklist"]:hover .group-tasklist-hover {
+            opacity: 100;
+            transition: opacity 0.3s;
+        }'''
+                   )
     return Fieldset(
         Input(
             name='tasklists',
@@ -105,7 +111,7 @@ def TasklistCard(tasklist: TaskListSchema):
             Div(
                 I(
                     data_feather='move',
-                    cls='cursor-pointer handle opacity-0 group-hover:opacity-100 transition-all'
+                    cls='cursor-pointer handle opacity-0 group-tasklist-hover transition-all'
                 ),
                 I(
                     data_feather='archive',
@@ -142,5 +148,6 @@ def TasklistCard(tasklist: TaskListSchema):
         ),
 
         id=f'tasklist_card_{tasklist.id}',
-        cls='flex flex-col gap-3 shadow-md p-4 rounded-lg group'
-    ), Script('feather.replace();')
+        data_group='group-tasklist',
+        cls='flex flex-col gap-3 shadow-md p-4 rounded-lg'
+    ), Script('feather.replace();'), styles
