@@ -8,7 +8,7 @@ from task.models import Task
 class TaskList(BaseModel):
     id = AutoField(primary_key=True)
     title = CharField()
-    user_id = ForeignKeyField(User, backref='tasklists', null=False, on_delete='CASCADE', on_update='CASCADE')
+    user = ForeignKeyField(User, backref='tasklists', null=False, on_delete='CASCADE', on_update='CASCADE')
     archived = BooleanField(default=False)
 
     @property

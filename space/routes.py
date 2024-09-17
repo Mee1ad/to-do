@@ -22,7 +22,7 @@ def get_space(space_id: int):
 @app.get('/space/{space_id}/{space_title}')
 def get_public_space(req, space_id: int, space_title: str):
     user: UserSchema = req.scope['user']
-    spaces = Space.select().where(Space.user_id == user.id).execute()
+    spaces = Space.select().where(Space.user == user.id).execute()
     space = get_space_by_id(space_id)
     return SpacesList(spaces, user), SpaceCard(space)
 
@@ -30,7 +30,7 @@ def get_public_space(req, space_id: int, space_title: str):
 @app.get('/archive')
 def get_archive(req):
     user = req.scope['user']
-    tasklists = TaskList.select().where(TaskList.user_id == user.id, TaskList.archived == True).execute()
+    tasklists = TaskList.select().where(TaskList.user == user.id, TaskList.archived == True).execute()
     tasklists_view = [TasklistCard(tasklist) for tasklist in tasklists]
     return (
         Div(
@@ -53,7 +53,7 @@ def get_archive(req):
 @app.get('/space_title_input/{space_id}')
 def get_title_input(req, space_id: int):
     user = req.scope['user']
-    space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
+    space = Space.select().where(Space.user == user, Space.id == space_id).first()
     return Form(
         Input(
             value=space.title,
@@ -74,7 +74,7 @@ def get_title_input(req, space_id: int):
 @app.put('/space/title/{space_id}')
 def update_space_title(req, space_id: int, space_title: str):
     user = req.scope['user']
-    space = Space.select().where(Space.user_id == user, Space.id == space_id).first()
+    space = Space.select().where(Space.user == user, Space.id == space_id).first()
     title = space_title.capitalize() if space_title == space_title.lower() else space_title
     space.title = title
     space.save()

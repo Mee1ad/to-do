@@ -8,7 +8,7 @@ from tasklist.models import TaskList
 class Space(BaseModel):
     id = AutoField(primary_key=True)
     title = CharField()
-    user_id = ForeignKeyField(User, backref='spaces', null=False, on_delete='CASCADE', on_update='CASCADE')
+    user = ForeignKeyField(User, backref='spaces', null=False, on_delete='CASCADE', on_update='CASCADE')
     order = IntegerField(default=99)
 
     @property

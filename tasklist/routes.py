@@ -57,7 +57,7 @@ def sort_tasks(tasklist_id: int, tasks: list[int]):
 @app.patch('/tasklist/archive/{tasklist_id}')
 def make_archive(req, tasklist_id: int):
     user = req.scope['user']
-    updated = TaskList.update(archived=~TaskList.archived).where(TaskList.user_id == user,
+    updated = TaskList.update(archived=~TaskList.archived).where(TaskList.user == user,
                                                                  TaskList.id == tasklist_id).execute()
     if not updated:
         print('not updated')

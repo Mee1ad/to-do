@@ -14,8 +14,8 @@ stage = env.stage.lower()
 @app.get('/')
 def home_page(req):
     user = req.scope.get('user', None)
-    spaces = Space.select().where(Space.user_id == user.id).order_by(Space.order).execute()
-    first_space = Space.select().where(Space.user_id == user.id).order_by(Space.order).first()
+    spaces = Space.select().where(Space.user == user.id).order_by(Space.order).execute()
+    first_space = Space.select().where(Space.user == user.id).order_by(Space.order).first()
     first_space_id = first_space.id if first_space else None
     space = get_space_by_id(first_space_id)
     return Div(
