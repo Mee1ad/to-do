@@ -10,11 +10,11 @@ tailwind_settings = Script(src="tailwind.config.js")
 sortable = Script(src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
 global_css = Link(rel="stylesheet", href="global.css", type="text/css")
 font_inter = Link(rel="stylesheet", href="https://rsms.me/inter/inter.css")
-css = Style('body { font-family: Inter var, sans;}')
+css = Style(
+    'body { font-family: Inter var, sans, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";}')
 
 debug = True
 live = True
-
 
 if env.stage.lower() == 'prod':
     debug = False
