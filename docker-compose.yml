@@ -34,7 +34,7 @@ services:
       - .env
 
   redis:
-    image: redis:alpine
+    build: ./redis
     container_name: redis
     restart: always
     ports:
