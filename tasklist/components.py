@@ -130,7 +130,7 @@ def TasklistCard(tasklist: TaskListSchema):
 
             cls='flex items-center justify-between mb-8'
         ),
-
+        TaskInput(tasklist.id),
         Div(
             *[TaskCard(task) for task in tasklist.tasks],
             id=f'tasklist_{tasklist.id}',
@@ -140,7 +140,7 @@ def TasklistCard(tasklist: TaskListSchema):
             hx_include="[name='tasks']",
             cls='flex flex-col gap-2 md:sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
         ),
-        TaskInput(tasklist.id),
+
         id=f'tasklist_card_{tasklist.id}',
-        cls='flex flex-col gap-2 shadow-md p-4 rounded-lg group'
+        cls='flex flex-col gap-3 shadow-md p-4 rounded-lg group'
     ), Script('feather.replace();')
