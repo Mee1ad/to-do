@@ -5,6 +5,7 @@ from auth.schemas import UserSchema
 from constants import ENTER_KEY_CODE
 from space.schemas import SpaceSchema
 from tasklist.components import TasklistCard, NewTasklistTitle
+from tasklist.models import TaskList
 
 
 def SpaceCard(space: SpaceSchema):
@@ -30,12 +31,16 @@ def SpaceCard(space: SpaceSchema):
             })
     """
     space_id = getattr(space, 'id', None)
+    new_tasklist, created = TaskList.get_or_create(title='', user_id=space.user.id,
+                                                   defaults={'title': '', 'user_id': space.user.id})
+    print(tasklists_view)
     return (
         Div(
             Div(
                 *tasklists_view,
                 Div(
-                    NewTasklistTitle(space_id) if space else None,
+                    # NewTasklistTitle(space_id) if space else None,
+                    TasklistCard(new_tasklist),
                     id='new_tasklist_title_component',
                 ),
 

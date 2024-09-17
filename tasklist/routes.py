@@ -19,10 +19,13 @@ def create_tasklist(req, tasklist_title: str, space_id: int):
     title = tasklist_title.capitalize() if tasklist_title == tasklist_title.lower() else tasklist_title
     tasklist = TaskList.create(title=title, user_id=user.id)
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
+    new_tasklist = TaskList.create(title='Create new list', user_id=user.id)
+    print(new_tasklist)
     return (
         TasklistCard(tasklist),
         Div(
             NewTasklistTitle(space_id),
+            TasklistCard(new_tasklist),
             id='new_tasklist_title_component',
         ),)
 

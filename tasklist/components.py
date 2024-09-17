@@ -5,37 +5,6 @@ from task.components import TaskCard, TaskInput
 from tasklist.schemas import TaskListSchema
 
 
-def tasklist_title_component_old(tasklist: TaskListSchema):
-    item_id = f'task_title_{tasklist.id}'
-    return Div(
-        Span(
-            "x",
-            hx_delete=f'/tasklist/{tasklist.id}',
-            hx_trigger=f'click',
-            hx_target=f'#tasklist_{tasklist.id}',
-            hx_swap='delete transition:true',
-            hx_transition_in='fade-in-scale-up',
-            cls='flex items-center text-red-300 cursor-pointer '
-        ),
-        Input(
-            type='text',
-            id=item_id,
-            name='tasklist_title',
-            value=tasklist.title,
-            placeholder='Add New List',
-            autocomplete='off',
-            hx_put='/tasklist',
-            hx_trigger=f'keyup[{ENTER_KEY_CODE}]',
-            hx_target=f'#{item_id}',
-            hx_swap='outerHTML transition:true',
-            hx_vals=f'{{"tasklist_id": "{tasklist.id}"}}',
-            hx_transition_in='fade-in-scale-up',
-            cls='text-gray-500 font-bold border-none !m-0 !pl-1.5'
-        ),
-        cls='flex !m-0'
-    )
-
-
 def TasklistTitle(tasklist: TaskListSchema, **kwargs):
     item_id = f'task-title-{tasklist.id}'
     return Input(
