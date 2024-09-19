@@ -1,8 +1,15 @@
-from fasthtml.common import Div, Span, Input, Fieldset, Legend, Form, I, Button, Script, Style
+from fasthtml.common import Div, Input, Fieldset, Legend, Form, I, Button, Script, Style
 
-from constants import ENTER_KEY_CODE
 from task.components import TaskCard, TaskInput
 from tasklist.schemas import TaskListSchema
+
+group_tasklist_styles = Style('''
+                    [data-group="group-tasklist"]:hover .group-tasklist-hover {
+                        opacity: 0.3;
+                        transition: opacity 0.3s;
+                    }
+                '''
+               )
 
 
 def TasklistTitle(tasklist: TaskListSchema, **kwargs):
@@ -61,13 +68,34 @@ def NewTasklistTitle(space_id: int):
     ), Script('feather.replace();')
 
 
+def NewTasklistCard(tasklist: TaskListSchema):
+    if not tasklist:
+        tasklist = TaskListSchema(id=0, title='')
+    return Fieldset(
+        Legend('tasklist', cls='sr-only'),
+        Div(
+            TasklistTitle(tasklist),
+
+            cls='flex items-center justify-between mb-8'
+        ),
+        TaskInput(tasklist.id),
+        Div(
+            *[TaskCard(task) for task in tasklist.tasks],
+            id=f'tasklist_{tasklist.id}',
+            hx_patch=f'/tasklist/{tasklist.id}/sort',
+            hx_trigger='end',
+            hx_swap='none',
+            hx_include="[name='tasks']",
+            cls='flex flex-col gap-2 sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
+        ),
+
+        id=f'tasklist_card_{tasklist.id}',
+        data_group='group-tasklist',
+        cls='flex flex-col gap-3 shadow-md p-4 rounded-lg'
+    ), Script('feather.replace();'), group_tasklist_styles
+
+
 def TasklistCard(tasklist: TaskListSchema):
-    styles = Style('''
-        [data-group="group-tasklist"]:hover .group-tasklist-hover {
-            opacity: 0.3;
-            transition: opacity 0.3s;
-        }'''
-                   )
     return Fieldset(
         Input(
             name='tasklists',
@@ -119,4 +147,4 @@ def TasklistCard(tasklist: TaskListSchema):
         id=f'tasklist_card_{tasklist.id}',
         data_group='group-tasklist',
         cls='flex flex-col gap-3 shadow-md p-4 rounded-lg'
-    ), Script('feather.replace();'), styles
+    ), Script('feather.replace();'), group_tasklist_styles
