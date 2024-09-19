@@ -9,7 +9,7 @@ group_tasklist_styles = Style('''
                         transition: opacity 0.3s;
                     }
                 '''
-               )
+                              )
 
 
 def TasklistTitle(tasklist: TaskListSchema, **kwargs):
@@ -68,29 +68,29 @@ def NewTasklistTitle(space_id: int):
     ), Script('feather.replace();')
 
 
-def NewTasklistCard(tasklist: TaskListSchema):
-    if not tasklist:
-        tasklist = TaskListSchema(id=0, title='')
-    return Fieldset(
-        Legend('tasklist', cls='sr-only'),
+def NewTasklistCard(space_id: int):
+    new_tasklist_title_id = f'new_task_title_{space_id}'
+    return Form(
         Div(
-            TasklistTitle(tasklist),
-
+            Input(
+                placeholder='Add a new list',
+                type='text',
+                name='tasklist_title',
+                autocomplete='off',
+                cls='inline text-primary font-bold focus:outline-none text-2xl w-72'
+            ),
             cls='flex items-center justify-between mb-8'
         ),
-        TaskInput(tasklist.id),
-        Div(
-            *[TaskCard(task) for task in tasklist.tasks],
-            id=f'tasklist_{tasklist.id}',
-            hx_patch=f'/tasklist/{tasklist.id}/sort',
-            hx_trigger='end',
-            hx_swap='none',
-            hx_include="[name='tasks']",
-            cls='flex flex-col gap-2 sortable sm:max-h-32 md:max-h-64 xl:max-h-96 overflow-auto'
-        ),
-
-        id=f'tasklist_card_{tasklist.id}',
-        data_group='group-tasklist',
+        hx_post='/tasklist',
+        hx_trigger='submit',
+        hx_target=f'#space_{space_id}',
+        hx_swap='beforeend transition:true',
+        hx_vals=f'{{"space_id": "{space_id}"}}',
+        hx_transition_in='fade-in-scale-up',
+        id=new_tasklist_title_id,
+        **{
+            'hx-on:htmx:before-request': "document.getElementById('new_tasklist_title_component').classList.add('opacity-0'); setTimeout(() => document.getElementById('new_tasklist_title_component').remove(), 10)"
+        },
         cls='flex flex-col gap-3 shadow-md p-4 rounded-lg'
     ), Script('feather.replace();'), group_tasklist_styles
 

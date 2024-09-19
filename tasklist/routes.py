@@ -4,7 +4,7 @@ from pydantic import ValidationError
 from app_init import app
 from auth.schemas import UserSchema
 from space.models import SpaceTaskList
-from tasklist.components import TasklistCard, NewTasklistTitle, TasklistTitle
+from tasklist.components import TasklistCard, NewTasklistCard, TasklistTitle
 from tasklist.models import TaskList, TaskListTask
 from tasklist.schemas import TaskListCreateSchema, TaskListUpdateSchema
 
@@ -20,12 +20,10 @@ def create_tasklist(req, tasklist_title: str, space_id: int):
     tasklist = TaskList.create(title=title, user_id=user.id)
     space_tasklist = SpaceTaskList.create(space_id=space_id, tasklist_id=tasklist.id)
     new_tasklist = TaskList.create(title='Create new list', user_id=user.id)
-    print(new_tasklist)
     return (
         TasklistCard(tasklist),
         Div(
-            NewTasklistTitle(space_id),
-            TasklistCard(new_tasklist),
+            NewTasklistCard(new_tasklist),
             id='new_tasklist_title_component',
         ),)
 
