@@ -41,8 +41,6 @@ services:
       - "6379:6379"
     environment:
       - REDIS_PASSWORD= ${REDIS_PASSWORD}
-    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
-
 
   nginx-proxy:
     image: jwilder/nginx-proxy

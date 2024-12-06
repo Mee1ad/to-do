@@ -6,4 +6,4 @@ RUN sysctl -p /etc/sysctl.conf
 
 EXPOSE 6379
 
-CMD ["redis-server"]
+CMD ["redis-server", "--requirepass", "mypassword"]
