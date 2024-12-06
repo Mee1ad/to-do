@@ -46,6 +46,7 @@ class RedisSessionMiddleware(MiddlewareBase):
                     redis_session_byte_dict = await self.redis_client.hgetall(session_id)
                 except (DataError, AuthenticationError) as e:
                     logging.error(f"Redis DataError: {str(e)}")
+                    return
 
             scope['redis_session'] = {
                 key.decode('utf-8'): value.decode('utf-8')
