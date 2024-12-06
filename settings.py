@@ -11,6 +11,7 @@ class Env(BaseSettings):
     postgres_user: str
     postgres_password: str
     postgres_db: str
+    redis_password: str
 
     class Config:
         env_file = '.env'
@@ -27,12 +28,12 @@ if env.stage.lower() == 'prod':
         host='db',
         port=5432
     )
-    REDIS = redis.from_url("redis://redis:6379/0")
+    REDIS = redis.from_url(f"redis://:{env.redis_password}@redis:6379/0")
 
 
 else:
     DB = SqliteDatabase('./db/to-do.sqlite3', pragmas={'foreign_keys': 1})
-    REDIS = redis.from_url("redis://localhost:6379/0")
+    REDIS = redis.from_url(f"redis://:{env.redis_password}@localhost:6379/0")
 
 
 class BaseModel(Model):
