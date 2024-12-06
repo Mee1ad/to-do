@@ -2,7 +2,7 @@ import logging
 import uuid
 
 from fasthtml.core import MiddlewareBase
-from redis.exceptions import DataError
+from redis.exceptions import DataError, AuthenticationError
 from starlette.datastructures import MutableHeaders
 
 from auth.models import User, Login
@@ -44,7 +44,7 @@ class RedisSessionMiddleware(MiddlewareBase):
             if session_id:
                 try:
                     redis_session_byte_dict = await self.redis_client.hgetall(session_id)
-                except DataError as e:
+                except (DataError, AuthenticationError) as e:
                     logging.error(f"Redis DataError: {str(e)}")
 
             scope['redis_session'] = {
