@@ -10,7 +10,7 @@ def callback(req, code: str):
     profile_and_token = workos_client.sso.get_profile_and_token(code)
     profile = profile_and_token.profile
     user = User.select().where(User.name == profile.first_name, User.email == profile.email).first()
-    print('user is', user.name)
+    print('user is', getattr(user, 'name', 'new user'))
     if not user:
         print('user not found')
         redis_session = req.scope['redis_session']
