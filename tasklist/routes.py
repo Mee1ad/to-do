@@ -23,7 +23,7 @@ def create_tasklist(req, tasklist_title: str, space_id: int):
     return (
         TasklistCard(tasklist),
         Div(
-            NewTasklistCard(new_tasklist),
+            NewTasklistCard(space_id),
             id='new_tasklist_title_component',
         ),)
 

@@ -45,7 +45,7 @@ def SpaceCard(space: SpaceSchema):
                 hx_trigger='end',
                 hx_swap='none',
                 hx_include="[name='tasklists']",
-                cls='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 sortable'
+                cls='flex flex-wrap gap-9 justify-center md:justify-start sortable'
             ),
             hx_patch='/test3',
             hx_trigger='changed',
